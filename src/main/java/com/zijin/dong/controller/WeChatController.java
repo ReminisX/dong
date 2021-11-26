@@ -1,8 +1,8 @@
 package com.zijin.dong.controller;
 
 import com.zijin.dong.entity.base.BaseResponse;
-import com.zijin.dong.entity.vo.LoginRecVo;
-import com.zijin.dong.entity.vo.LoginVo;
+import com.zijin.dong.entity.wechat.LoginRec;
+import com.zijin.dong.entity.wechat.LoginVo;
 import com.zijin.dong.service.Impl.WeChatServerImpl;
 import com.zijin.dong.utils.ResponseUtil;
 import io.swagger.annotations.Api;
@@ -28,11 +28,11 @@ public class WeChatController {
      */
     @PostMapping("/login")
     public BaseResponse login(@RequestBody LoginVo loginVo){
-        LoginRecVo loginRecVo = loginServerImpl.login(loginVo);
-        if (loginRecVo.getErrcode() == 0){
-            return ResponseUtil.success().addData(loginRecVo);
+        LoginRec loginRec = loginServerImpl.login(loginVo);
+        if (loginRec.getErrcode() == 0){
+            return ResponseUtil.success().addData(loginRec);
         }else{
-            return ResponseUtil.faliure().addData(loginRecVo);
+            return ResponseUtil.faliure().addData(loginRec);
         }
     }
 
