@@ -1,11 +1,12 @@
 package com.zijin.dong.service.Impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONUtil;
-import com.zijin.dong.entity.wechat.EncryptedDataRec;
-import com.zijin.dong.entity.wechat.LoginRec;
-import com.zijin.dong.entity.wechat.LoginVo;
+import com.zijin.dong.entity.wechat.*;
 import com.zijin.dong.service.WeChatServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,32 @@ public class WeChatServerImpl implements WeChatServer {
     @Value("${wechat.checkEncryptedDataUrl}")
     private String checkEncryptedDataUrl;
 
+    @Value("${wechat.paidUnionUrl}")
+    private String paidUnionUrl;
+
+    @Value("${wechat.pluginOpenPidUrl}")
+    private String pluginOpenPidUrl;
+
+    @Value("${wechat.accessTokenUrl}")
+    private String accessTokenUrl;
+
+    @Value("${wechat.dailyRetainUrl}")
+    private String dailyRetainUrl;
+
+    @Value("${wechat.weekRetainUrl}")
+    private String weekRetainUrl;
+
+    @Value("${wechat.monthRetainUrl}")
+    private String monthRetainUrl;
+
+    @Value("${wechat.dailySummaryUrl}")
+    private String dailySummaryUrl;
+
+    // 全局accessToken
+    private AccessTokenRec accessTokenRec;
+    // accessToken失效时间
+    private final Integer invaildTime = 2*60*60;
+
     /**
      * 微信登录凭证校验
      * @param loginVo 微信登录传递参数
@@ -45,7 +72,7 @@ public class WeChatServerImpl implements WeChatServer {
 
     /**
      * 检查加密信息是否由微信生成
-     * @param encryptedMsgHash
+     * @param encryptedMsgHash 传递实体类
      * @return EncryptedDataRecVo
      */
     public EncryptedDataRec checkEncryptedData(String encryptedMsgHash, String token){
@@ -60,8 +87,91 @@ public class WeChatServerImpl implements WeChatServer {
         return JSONUtil.toBean(encryptedDataRecStr, EncryptedDataRec.class);
     }
 
+    /**
+     * 用户支付完成后，获取该用户的 UnionId，无需用户授权
+     * @param paidUnionIdVo 传递实体类
+     * @return PaidUnionRec
+     */
+    public PaidUnionRec getPaidUnionId(PaidUnionIdVo paidUnionIdVo){
+        Map<String, Object> paidUnionMap = BeanUtil.beanToMap(paidUnionIdVo);
+        String paidUnionRecStr = HttpRequest.get(paidUnionUrl)
+                .form(paidUnionMap)
+                .execute()
+                .body();
+        return JSONUtil.toBean(paidUnionRecStr, PaidUnionRec.class);
+    }
 
-    public void getPaidUnionId(){
+    /**
+     * 通过 wx.pluginLogin 接口获得插件用户标志凭证 code 后传到开发者服务器，开发者服务器调用此接口换取插件用户的唯一标识 openpid。
+     * @param pluginOpenPidVo 传递实体类
+     * @return PluginOpenPidRec
+     */
+    public PluginOpenPidRec getPluginOpenPid(String accessToken, PluginOpenPidVo pluginOpenPidVo){
+        String pluginOpenPidRecStr = HttpRequest.post(pluginOpenPidUrl)
+                .form("access_token", accessToken)
+                .body(JSONUtil.toJsonStr(pluginOpenPidVo))
+                .execute()
+                .body();
+        return JSONUtil.toBean(pluginOpenPidRecStr, PluginOpenPidRec.class);
+    }
 
+    /**
+     * 获取小程序全局唯一后台接口调用凭据，该token有效期2小时，该函数设置缓存避免多次查询
+     * @param accessTokenVo 传递实体类
+     * @return AccessTokenRec
+     */
+    public AccessTokenRec getAccessToken(AccessTokenVo accessTokenVo){
+        DateTime now = new DateTime();
+        if (accessTokenRec == null || accessTokenRec.getLastUpdate() == null || DateUtil.between(accessTokenRec.getLastUpdate(), now, DateUnit.SECOND) >= invaildTime) {
+            Map<String, Object> accessTokenMap = BeanUtil.beanToMap(accessTokenVo);
+            String accessTokenRecStr = HttpRequest.get(accessTokenUrl)
+                    .form(accessTokenMap)
+                    .execute()
+                    .body();
+            this.accessTokenRec = JSONUtil.toBean(accessTokenRecStr, AccessTokenRec.class);
+        }
+        Long timeDiff = DateUtil.between(now, accessTokenRec.getLastUpdate(), DateUnit.SECOND);
+        accessTokenRec.setExpire_in(accessTokenRec.getExpire_in() - timeDiff);
+        accessTokenRec.setLastUpdate(now);
+        return accessTokenRec;
+    }
+
+    /**
+     * 获取用户访问小程序留存
+     * @param retainVo 传递实体类
+     * @param type 获取访问类型（day、week、month）
+     * @return DaliyRetainRec
+     */
+    public RetainRec getDailyRetain(RetainVo retainVo, String type, String accessToken){
+        String retainUrl = "";
+        switch (type){
+            case "day":
+                retainUrl = dailyRetainUrl;
+                break;
+            case "week":
+                retainUrl = weekRetainUrl;
+                break;
+            case "month":
+                retainUrl = monthRetainUrl;
+                break;
+            default:
+                logger.error("输入类型错误");
+                throw new IllegalArgumentException("输入类型错误");
+        }
+        String daliyRetainRecStr = HttpRequest.post(retainUrl)
+                .form("access_token", accessToken)
+                .body(JSONUtil.toJsonStr(retainVo))
+                .execute()
+                .body();
+        return JSONUtil.toBean(daliyRetainRecStr, RetainRec.class);
+    }
+
+    public DailySummaryRec getDailySummary(DailySummaryVo dailySummaryVo, String accessToken){
+        String dailySummaryRecStr = HttpRequest.post(dailySummaryUrl)
+                .form("access_token", accessToken)
+                .body(JSONUtil.toJsonStr(dailySummaryVo))
+                .execute()
+                .body();
+        return BeanUtil.toBean(dailySummaryRecStr, DailySummaryRec.class);
     }
 }

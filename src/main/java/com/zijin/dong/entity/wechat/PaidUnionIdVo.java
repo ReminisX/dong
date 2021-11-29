@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel
+@ApiModel("用户支付凭证接口上传数据")
 public class PaidUnionIdVo {
 
     /**
