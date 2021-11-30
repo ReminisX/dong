@@ -1,15 +1,15 @@
-package com.zijin.dong.entity.wechat;
+package com.zijin.dong.entity.wechat.visittrend;
 
+import com.zijin.dong.entity.wechat.dailysummary.DaliySummaryRecSub;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
-@ApiModel("用户访问小程序数据概况返回数据")
-public class DailySummaryRec {
+@ApiModel("访问趋势接受数据集")
+public class VisitTrendRec {
 
     /**
      * 列表接收

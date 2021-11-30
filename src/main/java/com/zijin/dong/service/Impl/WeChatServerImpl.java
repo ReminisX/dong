@@ -7,6 +7,22 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONUtil;
 import com.zijin.dong.entity.wechat.*;
+import com.zijin.dong.entity.wechat.accesstoken.AccessTokenRec;
+import com.zijin.dong.entity.wechat.accesstoken.AccessTokenVo;
+import com.zijin.dong.entity.wechat.dailysummary.DailySummaryRec;
+import com.zijin.dong.entity.wechat.dailysummary.DailySummaryVo;
+import com.zijin.dong.entity.wechat.login.LoginRec;
+import com.zijin.dong.entity.wechat.login.LoginVo;
+import com.zijin.dong.entity.wechat.paidunion.PaidUnionIdVo;
+import com.zijin.dong.entity.wechat.paidunion.PaidUnionRec;
+import com.zijin.dong.entity.wechat.performdata.PerformDataRec;
+import com.zijin.dong.entity.wechat.performdata.PerformDataVo;
+import com.zijin.dong.entity.wechat.pluginopen.PluginOpenPidRec;
+import com.zijin.dong.entity.wechat.pluginopen.PluginOpenPidVo;
+import com.zijin.dong.entity.wechat.retain.RetainRec;
+import com.zijin.dong.entity.wechat.retain.RetainVo;
+import com.zijin.dong.entity.wechat.visittrend.VisitTrendRec;
+import com.zijin.dong.entity.wechat.visittrend.VisitTrendVo;
 import com.zijin.dong.service.WeChatServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +72,12 @@ public class WeChatServerImpl implements WeChatServer {
 
     @Value("${wechat.monthVisitTrendUrl}")
     private String monthVisitTrendUrl;
+
+    @Value("${wechat.performDataUrl}")
+    private String performDataUrl;
+
+    @Value("${wechat.userPortraitUrl}")
+    private String userPortraitUrl;
 
     // 全局accessToken，长度512
     private AccessTokenRec accessTokenRec;
@@ -221,6 +243,21 @@ public class WeChatServerImpl implements WeChatServer {
         return JSONUtil.toBean(visitTrendRecStr, VisitTrendRec.class);
     }
 
+    /**
+     * 获取小程序启动性能，运行性能等数据。
+     * @param performDataVo 请求数据实体类
+     * @param accessToken token
+     * @return PerFormDataRec
+     */
+    public PerformDataRec getPerformData(PerformDataVo performDataVo, String accessToken){
+        String performDataRecStr = HttpRequest.post(performDataUrl)
+                .form("access_token", accessToken)
+                .body(JSONUtil.toJsonStr(performDataVo))
+                .execute()
+                .body();
+        return BeanUtil.toBean(performDataRecStr, PerformDataRec.class);
+    }
 
+    
 
 }

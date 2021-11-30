@@ -1,12 +1,12 @@
-package com.zijin.dong.entity.wechat;
+package com.zijin.dong.entity.wechat.retain;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel("访问趋势发送数据")
-public class VisitTrendVo {
+@ApiModel("获取用户访问小程序日留存")
+public class RetainVo {
 
     /**
      * 开始日期

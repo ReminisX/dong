@@ -59,5 +59,30 @@
       "name": "wechat.monthVisitTrend",
       "type": "java.lang.String",
       "description": "Description for wechat.monthVisitTrend."
+    },
+    {
+      "name": "wechat.dailyVisitTrendUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.dailyVisitTrendUrl."
+    },
+    {
+      "name": "wechat.weekVisitTrendUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.weekVisitTrendUrl."
+    },
+    {
+      "name": "wechat.monthVisitTrendUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.monthVisitTrendUrl."
+    },
+    {
+      "name": "wechat.performDataUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.performDataUrl."
+    },
+    {
+      "name": "wechat.userPortraitUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.userPortraitUrl."
     }
   ] }

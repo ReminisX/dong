@@ -1,6 +1,12 @@
 package com.zijin.dong;
 
 import com.zijin.dong.entity.wechat.*;
+import com.zijin.dong.entity.wechat.login.LoginRec;
+import com.zijin.dong.entity.wechat.login.LoginVo;
+import com.zijin.dong.entity.wechat.paidunion.PaidUnionIdVo;
+import com.zijin.dong.entity.wechat.paidunion.PaidUnionRec;
+import com.zijin.dong.entity.wechat.pluginopen.PluginOpenPidRec;
+import com.zijin.dong.entity.wechat.pluginopen.PluginOpenPidVo;
 import com.zijin.dong.service.Impl.WeChatServerImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

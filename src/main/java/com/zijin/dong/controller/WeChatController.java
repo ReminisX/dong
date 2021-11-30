@@ -1,8 +1,8 @@
 package com.zijin.dong.controller;
 
 import com.zijin.dong.entity.base.BaseResponse;
-import com.zijin.dong.entity.wechat.LoginRec;
-import com.zijin.dong.entity.wechat.LoginVo;
+import com.zijin.dong.entity.wechat.login.LoginRec;
+import com.zijin.dong.entity.wechat.login.LoginVo;
 import com.zijin.dong.service.Impl.WeChatServerImpl;
 import com.zijin.dong.utils.ResponseUtil;
 import io.swagger.annotations.Api;

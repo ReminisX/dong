@@ -1,4 +1,4 @@
-package com.zijin.dong.entity.wechat;
+package com.zijin.dong.entity.wechat.login;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
