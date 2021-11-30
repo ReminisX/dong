@@ -6,6 +6,7 @@ import com.zijin.dong.entity.wechat.LoginVo;
 import com.zijin.dong.service.Impl.WeChatServerImpl;
 import com.zijin.dong.utils.ResponseUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class WeChatController {
      * @return BaseResponse
      */
     @PostMapping("/login")
+    @ApiOperation("微信登录凭证校验")
     public BaseResponse login(@RequestBody LoginVo loginVo){
         LoginRec loginRec = loginServerImpl.login(loginVo);
         if (loginRec.getErrcode() == 0){

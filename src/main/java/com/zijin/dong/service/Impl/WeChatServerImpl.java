@@ -48,7 +48,16 @@ public class WeChatServerImpl implements WeChatServer {
     @Value("${wechat.dailySummaryUrl}")
     private String dailySummaryUrl;
 
-    // 全局accessToken
+    @Value("${wechat.dailyVisitTrendUrl}")
+    private String dailyVisitTrendUrl;
+
+    @Value("${wechat.weekVisitTrendUrl}")
+    private String weekVisitTrendUrl;
+
+    @Value("${wechat.monthVisitTrendUrl}")
+    private String monthVisitTrendUrl;
+
+    // 全局accessToken，长度512
     private AccessTokenRec accessTokenRec;
     // accessToken失效时间
     private final Integer invaildTime = 2*60*60;
@@ -142,8 +151,8 @@ public class WeChatServerImpl implements WeChatServer {
      * @param type 获取访问类型（day、week、month）
      * @return DaliyRetainRec
      */
-    public RetainRec getDailyRetain(RetainVo retainVo, String type, String accessToken){
-        String retainUrl = "";
+    public RetainRec getRetain(RetainVo retainVo, String type, String accessToken){
+        String retainUrl;
         switch (type){
             case "day":
                 retainUrl = dailyRetainUrl;
@@ -166,6 +175,12 @@ public class WeChatServerImpl implements WeChatServer {
         return JSONUtil.toBean(daliyRetainRecStr, RetainRec.class);
     }
 
+    /**
+     * 获取用户小程序数据概况
+     * @param dailySummaryVo 传递实体类
+     * @param accessToken token
+     * @return DailySummaryRec
+     */
     public DailySummaryRec getDailySummary(DailySummaryVo dailySummaryVo, String accessToken){
         String dailySummaryRecStr = HttpRequest.post(dailySummaryUrl)
                 .form("access_token", accessToken)
@@ -174,4 +189,38 @@ public class WeChatServerImpl implements WeChatServer {
                 .body();
         return BeanUtil.toBean(dailySummaryRecStr, DailySummaryRec.class);
     }
+
+    /**
+     * 用户访问小程序趋势
+     * @param visitTrendVo 实体类
+     * @param type 调用类型（日、周、月）
+     * @param accessToken token
+     * @return VisitTrendRec
+     */
+    public VisitTrendRec getVisitTrend(VisitTrendVo visitTrendVo, String type, String accessToken){
+        String visitTrendUrl;
+        switch (type){
+            case "day":
+                visitTrendUrl = dailyVisitTrendUrl;
+                break;
+            case "week":
+                visitTrendUrl = weekVisitTrendUrl;
+                break;
+            case "month":
+                visitTrendUrl = monthVisitTrendUrl;
+                break;
+            default:
+                logger.error("输入类型错误");
+                throw new IllegalArgumentException("输入类型错误");
+        }
+        String visitTrendRecStr = HttpRequest.post(visitTrendUrl)
+                .form("access_token", accessToken)
+                .body(JSONUtil.toJsonStr(visitTrendVo))
+                .execute()
+                .body();
+        return JSONUtil.toBean(visitTrendRecStr, VisitTrendRec.class);
+    }
+
+
+
 }

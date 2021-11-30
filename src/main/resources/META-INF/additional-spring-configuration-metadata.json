@@ -1,0 +1,63 @@
+{
+  "properties": [
+    {
+      "name": "wechat.loginUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.loginUrl."
+    },
+    {
+      "name": "wechat.checkEncryptedDataUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.checkEncryptedDataUrl."
+    },
+    {
+      "name": "wechat.paidUnionUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.paidUnionUrl."
+    },
+    {
+      "name": "wechat.pluginOpenPidUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.pluginOpenPidUrl."
+    },
+    {
+      "name": "wechat.accessTokenUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.accessTokenUrl."
+    },
+    {
+      "name": "wechat.dailyRetainUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.dailyRetainUrl."
+    },
+    {
+      "name": "wechat.monthRetainUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.monthRetainUrl."
+    },
+    {
+      "name": "wechat.weekRetainUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.weekRetainUrl."
+    },
+    {
+      "name": "wechat.dailySummaryUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.dailySummaryUrl."
+    },
+    {
+      "name": "wechat.dailyVisitTrend",
+      "type": "java.lang.String",
+      "description": "Description for wechat.dailyVisitTrend."
+    },
+    {
+      "name": "wechat.weekVisitTrend",
+      "type": "java.lang.String",
+      "description": "Description for wechat.weekVisitTrend."
+    },
+    {
+      "name": "wechat.monthVisitTrend",
+      "type": "java.lang.String",
+      "description": "Description for wechat.monthVisitTrend."
+    }
+  ] }
