@@ -21,6 +21,8 @@ import com.zijin.dong.entity.wechat.pluginopen.PluginOpenPidRec;
 import com.zijin.dong.entity.wechat.pluginopen.PluginOpenPidVo;
 import com.zijin.dong.entity.wechat.retain.RetainRec;
 import com.zijin.dong.entity.wechat.retain.RetainVo;
+import com.zijin.dong.entity.wechat.userportrait.UserPortraitRec;
+import com.zijin.dong.entity.wechat.userportrait.UserPortraitVo;
 import com.zijin.dong.entity.wechat.visittrend.VisitTrendRec;
 import com.zijin.dong.entity.wechat.visittrend.VisitTrendVo;
 import com.zijin.dong.service.WeChatServer;
@@ -258,6 +260,13 @@ public class WeChatServerImpl implements WeChatServer {
         return BeanUtil.toBean(performDataRecStr, PerformDataRec.class);
     }
 
-    
+    public UserPortraitRec getUserPortrait(UserPortraitVo userPortraitVo, String accessToken){
+        String userPortraitRecStr = HttpRequest.post(userPortraitUrl)
+                .form("access_token", accessToken)
+                .body(JSONUtil.toJsonStr(userPortraitVo))
+                .execute()
+                .body();
+        return BeanUtil.toBean(userPortraitRecStr, UserPortraitRec.class);
+    }
 
 }
