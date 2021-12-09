@@ -61,6 +61,11 @@
       "description": "Description for wechat.monthVisitTrend."
     },
     {
+      "name": "wechat.userPortraitUrl",
+      "type": "java.lang.String",
+      "description": "Description for wechat.userPortraitUrl."
+    },
+    {
       "name": "wechat.dailyVisitTrendUrl",
       "type": "java.lang.String",
       "description": "Description for wechat.dailyVisitTrendUrl."
@@ -81,8 +86,8 @@
       "description": "Description for wechat.performDataUrl."
     },
     {
-      "name": "wechat.userPortraitUrl",
+      "name": "wechat.visitDistributionUrl",
       "type": "java.lang.String",
-      "description": "Description for wechat.userPortraitUrl."
+      "description": "Description for wechat.visitDistributionUrl."
     }
   ] }

@@ -23,6 +23,10 @@ import com.zijin.dong.entity.wechat.retain.RetainRec;
 import com.zijin.dong.entity.wechat.retain.RetainVo;
 import com.zijin.dong.entity.wechat.userportrait.UserPortraitRec;
 import com.zijin.dong.entity.wechat.userportrait.UserPortraitVo;
+import com.zijin.dong.entity.wechat.visitdistribution.VisitDistributionRec;
+import com.zijin.dong.entity.wechat.visitdistribution.VisitDistributionVo;
+import com.zijin.dong.entity.wechat.visitpage.VisitPageRec;
+import com.zijin.dong.entity.wechat.visitpage.VisitPageVo;
 import com.zijin.dong.entity.wechat.visittrend.VisitTrendRec;
 import com.zijin.dong.entity.wechat.visittrend.VisitTrendVo;
 import com.zijin.dong.service.WeChatServer;
@@ -80,6 +84,12 @@ public class WeChatServerImpl implements WeChatServer {
 
     @Value("${wechat.userPortraitUrl}")
     private String userPortraitUrl;
+
+    @Value("${wechat.visitDistributionUrl}")
+    private String visitDistributionUrl;
+
+    @Value("${wechat.visitPageUrl}")
+    private String visitPageUrl;
 
     // 全局accessToken，长度512
     private AccessTokenRec accessTokenRec;
@@ -260,6 +270,12 @@ public class WeChatServerImpl implements WeChatServer {
         return BeanUtil.toBean(performDataRecStr, PerformDataRec.class);
     }
 
+    /**
+     * 用户画像获取
+     * @param userPortraitVo 用户画像时间段
+     * @param accessToken token
+     * @return UserPortraitRec
+     */
     public UserPortraitRec getUserPortrait(UserPortraitVo userPortraitVo, String accessToken){
         String userPortraitRecStr = HttpRequest.post(userPortraitUrl)
                 .form("access_token", accessToken)
@@ -267,6 +283,25 @@ public class WeChatServerImpl implements WeChatServer {
                 .execute()
                 .body();
         return BeanUtil.toBean(userPortraitRecStr, UserPortraitRec.class);
+    }
+
+    /**
+     * 用户访问分布数据
+     * @param visitDistributionVo 上传分布数据
+     * @param accessToken token
+     * @return VisitDistributionRec
+     */
+    public VisitDistributionRec getVisitDistribution(VisitDistributionVo visitDistributionVo, String accessToken){
+        String visitDistributionRecStr = HttpRequest.post(visitDistributionUrl)
+                .form("access_token", accessToken)
+                .body(JSONUtil.toJsonStr(visitDistributionVo))
+                .execute()
+                .body();
+        return BeanUtil.toBean(visitDistributionRecStr, VisitDistributionRec.class);
+    }
+
+    public VisitPageRec getVisitPage(VisitPageVo visitPageVo, String accessToken){
+
     }
 
 }
