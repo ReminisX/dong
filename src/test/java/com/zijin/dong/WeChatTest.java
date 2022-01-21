@@ -58,4 +58,9 @@ public class WeChatTest {
         System.out.println(pluginOpenPidRec);
     }
 
+    @Test
+    void test(){
+
+    }
+
 }

@@ -300,8 +300,4 @@ public class WeChatServerImpl implements WeChatServer {
         return BeanUtil.toBean(visitDistributionRecStr, VisitDistributionRec.class);
     }
 
-    public VisitPageRec getVisitPage(VisitPageVo visitPageVo, String accessToken){
-
-    }
-
 }
