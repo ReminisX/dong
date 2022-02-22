@@ -1,7 +1,5 @@
 package com.zijin.dong.controller;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-import com.zijin.dong.entity.TestEntity;
 import com.zijin.dong.entity.base.BaseResponse;
 import com.zijin.dong.entity.wechat.login.LoginRec;
 import com.zijin.dong.entity.wechat.login.LoginVo;
@@ -22,12 +20,6 @@ public class WeChatController {
     @Autowired
     public WeChatController(WeChatServerImpl loginServerImpl){
         this.loginServerImpl = loginServerImpl;
-    }
-
-    @PostMapping("/test")
-    @ApiOperation("微信登录凭证校验")
-    public String test(TestEntity entity){
-        return "value is";
     }
 
     /**
