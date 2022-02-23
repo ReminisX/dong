@@ -1,0 +1,67 @@
+mybatis:
+    mapper-locations: classpath:mappers/*xml
+    type-aliases-package: com.zijin.dong.mybatis.entity
+server:
+    port: 8080
+spring:
+    application:
+        name: dong
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        name: defaultDataSource
+        password: 123456
+        url: jdbc:mysql://localhost:3306/dong?serverTimezone=UTC
+        username: abc
+    redis:
+        database: 0
+        host: 127.0.0.1
+        jedis:
+            pool:
+                max-active: 100
+                max-idle: 20
+                min-idle: 5
+        password: ''
+        port: 6379
+        timeout: 1000
+    security:
+        user:
+            name: dong
+            password: 123456
+    session:
+        store-type: none
+
+# Sa-Token配置
+sa-token:
+    # token名称 (同时也是cookie名称)
+    token-name: satoken
+    # token有效期，单位s 默认30天, -1代表永不过期
+    timeout: 2592000
+    # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+    activity-timeout: -1
+    # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+    is-concurrent: false
+    # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+    is-share: false
+    # token风格
+    token-style: uuid
+    # 是否输出操作日志
+    is-log: false
+
+
+wechat:
+    accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token
+    checkEncryptedDataUrl: https://api.weixin.qq.com/wxa/business/checkencryptedmsg
+    dailyRetainUrl: https://api.weixin.qq.com/datacube/getweanalysisappiddailyretaininfo
+    dailySummaryUrl: https://api.weixin.qq.com/datacube/getweanalysisappiddailysummarytrend
+    dailyVisitTrendUrl: https://api.weixin.qq.com/datacube/getweanalysisappiddailyvisittrend
+    loginUrl: https://api.weixin.qq.com/sns/jscode2session
+    monthRetainUrl: https://api.weixin.qq.com/datacube/getweanalysisappidmonthlyretaininfo
+    monthVisitTrendUrl: https://api.weixin.qq.com/datacube/getweanalysisappidmonthlyvisittrend
+    paidUnionUrl: https://api.weixin.qq.com/wxa/getpaidunionid
+    performDataUrl: https://api.weixin.qq.com/wxa/business/performance/boot
+    pluginOpenPidUrl: https://api.weixin.qq.com/wxa/getpluginopenpid
+    userPortraitUrl: https://api.weixin.qq.com/datacube/getweanalysisappiduserportrait
+    visitDistributionUrl: https://api.weixin.qq.com/datacube/getweanalysisappidvisitdistribution
+    visitPageUrl: https://api.weixin.qq.com/datacube/getweanalysisappidvisitpage
+    weekRetainUrl: https://api.weixin.qq.com/datacube/getweanalysisappidweeklyretaininfo
+    weekVisitTrendUrl: https://api.weixin.qq.com/datacube/getweanalysisappidweeklyvisittrend

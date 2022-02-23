@@ -9,34 +9,22 @@ import lombok.Data;
 
 /**
  * 
- * @TableName users
+ * @TableName user_power
  */
-@TableName(value ="users")
+@TableName(value ="user_power")
 @Data
-public class Users implements Serializable {
+public class UserPower implements Serializable {
     /**
-     * 唯一值
+     * 用户身份唯一标识
      */
     @TableId(value = "id")
     private Long id;
 
     /**
-     * 用户名
+     * 用户权限
      */
-    @TableField(value = "username")
-    private String username;
-
-    /**
-     * 密码
-     */
-    @TableField(value = "password")
-    private String password;
-
-    /**
-     * 身份
-     */
-    @TableField(value = "identifer")
-    private String identifer;
+    @TableField(value = "power")
+    private String power;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -1,5 +1,6 @@
 package com.zijin.dong;
 
+import cn.dev33.satoken.stp.StpUtil;
 import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ class DongApplicationTests {
 
     @Test
     void test(){
-
+        StpUtil.login(123);
+        System.out.println(StpUtil.getTokenName());
 
     }
 

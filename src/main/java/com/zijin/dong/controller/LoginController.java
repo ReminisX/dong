@@ -1,5 +1,7 @@
 package com.zijin.dong.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.BaseResponse;
@@ -24,6 +26,12 @@ public class LoginController {
         this.usersService = usersService;
     }
 
+    @PostMapping("/login")
+    public BaseResponse login(@RequestBody Users users){
+        return usersService.login(users) ? ResponseUtil.success() : ResponseUtil.faliure();
+    }
+
+
     @PostMapping("/register")
     public BaseResponse register(@RequestBody Users users){
         logger.info("传入参数:" + users);
@@ -32,14 +40,23 @@ public class LoginController {
         return b ? ResponseUtil.success() : ResponseUtil.faliure();
     }
 
-    @PostMapping("/test")
-    public BaseResponse test(){
-        return ResponseUtil.success();
+    @PostMapping("/getId")
+    public BaseResponse getLoginId(){
+        Long id = null;
+        String errMsg = "";
+        try{
+            id = StpUtil.getLoginIdAsLong();
+        }catch (Exception e){
+            errMsg = e.getLocalizedMessage();
+            logger.error(errMsg);
+        }
+        return !ObjectUtil.isEmpty(id) ? ResponseUtil.success().addData(id) : ResponseUtil.faliure().addData(errMsg);
     }
 
-    @PostMapping("/t")
-    public BaseResponse t(){
-        return ResponseUtil.success();
+    @PostMapping("/exit")
+    public BaseResponse exit(){
+        boolean b = usersService.exit();
+        return b ? ResponseUtil.success().addData("退出成功") : ResponseUtil.faliure().addData("当前无登录账号");
     }
 
 }

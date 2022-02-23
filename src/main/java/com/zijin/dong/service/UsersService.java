@@ -12,4 +12,10 @@ public interface UsersService extends IService<Users> {
 
     public boolean addUser(Users users);
 
+    public boolean login(Users users);
+
+    public boolean exit();
+
+    public boolean controlUser(Long id, String operation);
+
 }
