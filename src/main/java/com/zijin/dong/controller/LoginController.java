@@ -1,5 +1,6 @@
 package com.zijin.dong.controller;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.BaseResponse;
 import com.zijin.dong.service.UsersService;
@@ -29,6 +30,16 @@ public class LoginController {
         boolean b = usersService.addUser(users);
         logger.info("新建用户结果：" + b);
         return b ? ResponseUtil.success() : ResponseUtil.faliure();
+    }
+
+    @PostMapping("/test")
+    public BaseResponse test(){
+        return ResponseUtil.success();
+    }
+
+    @PostMapping("/t")
+    public BaseResponse t(){
+        return ResponseUtil.success();
     }
 
 }

@@ -7,11 +7,6 @@ import com.zijin.dong.entity.Users;
 import com.zijin.dong.service.UsersService;
 import com.zijin.dong.mapper.UsersMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,32 +14,15 @@ import org.springframework.stereotype.Service;
 * @description 针对表【users】的数据库操作Service实现
 * @createDate 2022-02-22 16:05:07
 */
-@Service
+@Service("userDetailsService")
 public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
-    implements UsersService, UserDetailsService {
+    implements UsersService{
 
     private UsersMapper usersMapper;
 
     @Autowired
     public UsersServiceImpl(UsersMapper usersMapper){
         this.usersMapper = usersMapper;
-    }
-
-    /**
-     * 验证账号
-     * @param username 用户名
-     * @return User
-     * @throws UsernameNotFoundException 异常
-     */
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        QueryWrapper<Users> usersQueryWrapper = new QueryWrapper<>();
-        usersQueryWrapper.eq("username", username);
-        Users users = usersMapper.selectOne(usersQueryWrapper);
-        if(users == null){
-            throw new UsernameNotFoundException("用户名不存在");
-        }
-        return new User(username, users.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 
     /**
