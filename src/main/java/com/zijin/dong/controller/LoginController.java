@@ -6,6 +6,8 @@ import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.BaseResponse;
 import com.zijin.dong.service.UsersService;
 import com.zijin.dong.utils.ResponseUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/login")
+@Api("普通用户登录相关接口")
 public class LoginController {
 
     private final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -27,6 +30,7 @@ public class LoginController {
         this.usersService = usersService;
     }
 
+    @ApiOperation(value = "普通用户登录", httpMethod = "POST")
     @PostMapping("/login")
     public BaseResponse login(@RequestBody Users users){
         if (usersService.login(users)){
@@ -36,6 +40,7 @@ public class LoginController {
         }
     }
 
+    @ApiOperation(value = "普通用户注册", httpMethod = "POST")
     @PostMapping("/register")
     public BaseResponse register(@RequestBody Users users){
         users.setIdentifer("normal");
@@ -43,6 +48,7 @@ public class LoginController {
         return b ? ResponseUtil.success() : ResponseUtil.faliure();
     }
 
+    @ApiOperation(value = "普通用户查询自己ID", httpMethod = "POST")
     @PostMapping("/getId")
     public BaseResponse getLoginId(){
         System.out.println(StpUtil.getSession().get("user"));
@@ -57,6 +63,7 @@ public class LoginController {
         return !ObjectUtil.isEmpty(id) ? ResponseUtil.success().addData(id) : ResponseUtil.faliure().addData(errMsg);
     }
 
+    @ApiOperation(value = "普通用户退出", httpMethod = "POST")
     @PostMapping("/exit")
     public BaseResponse exit(){
         boolean b = usersService.exit();

@@ -18,11 +18,11 @@ public class SaTokenConfig implements WebMvcConfigurer {
         // 注册注解拦截器，并排除不需要注解鉴权的接口地址 (与登录拦截器无关)
         registry.addInterceptor(new SaRouteInterceptor((saRequest, saResponse, o) -> {
             // 拦截所有请求，仅开放login接口
-            SaRouter.match("/**", "/login/login", r -> StpUtil.checkLogin());
+//            SaRouter.match("/**", "/login/login", r -> StpUtil.checkLogin());
             // 配置路由权限
             SaRouter.match("/root").check(r -> StpUtil.checkRole("root"));
             SaRouter.match("/login").check(r -> StpUtil.checkRoleOr("root", "admin", "normal"));
-
+            SaRouter.notMatch("/doc.html");
         })).addPathPatterns("/**");
     }
 }
