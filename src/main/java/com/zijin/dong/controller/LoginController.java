@@ -2,7 +2,6 @@ package com.zijin.dong.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.BaseResponse;
 import com.zijin.dong.service.UsersService;
@@ -12,9 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/login")
 public class LoginController {
 
     private final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -28,20 +29,23 @@ public class LoginController {
 
     @PostMapping("/login")
     public BaseResponse login(@RequestBody Users users){
-        return usersService.login(users) ? ResponseUtil.success() : ResponseUtil.faliure();
+        if (usersService.login(users)){
+            return ResponseUtil.success();
+        }else{
+            return ResponseUtil.faliure();
+        }
     }
-
 
     @PostMapping("/register")
     public BaseResponse register(@RequestBody Users users){
-        logger.info("传入参数:" + users);
+        users.setIdentifer("normal");
         boolean b = usersService.addUser(users);
-        logger.info("新建用户结果：" + b);
         return b ? ResponseUtil.success() : ResponseUtil.faliure();
     }
 
     @PostMapping("/getId")
     public BaseResponse getLoginId(){
+        System.out.println(StpUtil.getSession().get("user"));
         Long id = null;
         String errMsg = "";
         try{

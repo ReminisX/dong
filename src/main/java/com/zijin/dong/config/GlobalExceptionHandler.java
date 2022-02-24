@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
         logger.error(e.getLocalizedMessage());
         String errMsg = "";
         if (e instanceof NotLoginException){
-            errMsg = e.getMessage();
+            errMsg = e.getLocalizedMessage();
         }else if (e instanceof NotRoleException){
             errMsg = "无此角色: " + ((NotRoleException) e).getRole();
         }else if (e instanceof NotPermissionException){
@@ -66,8 +66,11 @@ public class GlobalExceptionHandler {
         }else if (e instanceof DisableLoginException){
             errMsg = "账号被封禁: " + ((DisableLoginException) e).getDisableTime() + "秒后解封";
         }else{
-            errMsg = e.getMessage();
+            errMsg = e.getLocalizedMessage();
         }
-        return ResponseUtil.success().addParam("errMsg", errMsg);
+        if (errMsg.length() > 50){
+            errMsg = errMsg.split("\\.")[0];
+        }
+        return ResponseUtil.success().setMessage(errMsg);
     }
 }

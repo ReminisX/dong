@@ -10,7 +10,6 @@ import com.zijin.dong.mapper.UserPowerMapper;
 import com.zijin.dong.mapper.UsersMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;

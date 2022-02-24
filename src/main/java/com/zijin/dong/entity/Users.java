@@ -1,10 +1,12 @@
 package com.zijin.dong.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.Date;
+
+import com.zijin.dong.entity.base.Paging;
 import lombok.Data;
 
 /**
@@ -13,7 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="users")
 @Data
-public class Users implements Serializable {
+public class Users extends Paging implements Serializable {
     /**
      * 唯一值
      */
@@ -37,6 +39,15 @@ public class Users implements Serializable {
      */
     @TableField(value = "identifer")
     private String identifer;
+
+    @TableField(value = "create_time")
+    private Date createTime;
+
+    @TableField(value = "login_time")
+    private Date loginTime;
+
+    @TableField(value = "token")
+    private String token;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

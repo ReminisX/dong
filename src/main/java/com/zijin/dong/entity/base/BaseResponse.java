@@ -1,5 +1,7 @@
 package com.zijin.dong.entity.base;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
+
 import java.util.HashMap;
 
 /**
@@ -54,11 +56,12 @@ public class BaseResponse extends HashMap<String, Object> {
         put(CODE, code);
     }
 
-    public void setMessage(String message) {
+    public BaseResponse setMessage(String message) {
         if (containsKey(MESSAGE)){
             remove(MESSAGE);
         }
         put(MESSAGE, message);
+        return this;
     }
 
     /**

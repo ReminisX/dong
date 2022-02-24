@@ -6,7 +6,7 @@
  * 版权所有，侵权必究！
  */
 
-package com.zijin.dong.utils;
+package com.zijin.dong.entity.base;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiModel;
@@ -21,7 +21,7 @@ import java.util.List;
  * @author Mark sunlightcs@gmail.com
  */
 @ApiModel("分页工具类")
-public class PageUtils<T> implements Serializable {
+public class Pages<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 总记录数
@@ -56,7 +56,7 @@ public class PageUtils<T> implements Serializable {
 	 * @param pageSize    每页记录数
 	 * @param currPage    当前页数
 	 */
-	public PageUtils(List<T> list, int totalCount, int pageSize, int currPage) {
+	public Pages(List<T> list, int totalCount, int pageSize, int currPage) {
 		this.list = list;
 		this.totalCount = totalCount;
 		this.pageSize = pageSize;
@@ -64,10 +64,17 @@ public class PageUtils<T> implements Serializable {
 		this.totalPage = (int)Math.ceil((double)totalCount/pageSize);
 	}
 
+	public Pages(List<T> list){
+		this.list = list;
+		this.totalCount = list.size();
+		this.currPage = 1;
+		this.pageSize = list.size();
+	}
+
 	/**
 	 * 分页
 	 */
-	public PageUtils(IPage<T> page) {
+	public Pages(IPage<T> page) {
 		this.list = page.getRecords();
 		this.totalCount = (int)page.getTotal();
 		this.pageSize = (int)page.getSize();
