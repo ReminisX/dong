@@ -25,8 +25,6 @@ import com.zijin.dong.entity.wechat.userportrait.UserPortraitRec;
 import com.zijin.dong.entity.wechat.userportrait.UserPortraitVo;
 import com.zijin.dong.entity.wechat.visitdistribution.VisitDistributionRec;
 import com.zijin.dong.entity.wechat.visitdistribution.VisitDistributionVo;
-import com.zijin.dong.entity.wechat.visitpage.VisitPageRec;
-import com.zijin.dong.entity.wechat.visitpage.VisitPageVo;
 import com.zijin.dong.entity.wechat.visittrend.VisitTrendRec;
 import com.zijin.dong.entity.wechat.visittrend.VisitTrendVo;
 import com.zijin.dong.service.WeChatServer;

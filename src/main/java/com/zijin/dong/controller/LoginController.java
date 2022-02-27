@@ -4,12 +4,15 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.BaseResponse;
+import com.zijin.dong.entity.vo.UserLoginVo;
+import com.zijin.dong.entity.vo.UserRegisterVo;
 import com.zijin.dong.service.UsersService;
 import com.zijin.dong.utils.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +35,9 @@ public class LoginController {
 
     @ApiOperation(value = "普通用户登录", httpMethod = "POST")
     @PostMapping("/login")
-    public BaseResponse login(@RequestBody Users users){
+    public BaseResponse login(@RequestBody UserLoginVo userLoginVo){
+        Users users = new Users();
+        BeanUtils.copyProperties(userLoginVo, users);
         if (usersService.login(users)){
             return ResponseUtil.success();
         }else{
@@ -42,7 +47,9 @@ public class LoginController {
 
     @ApiOperation(value = "普通用户注册", httpMethod = "POST")
     @PostMapping("/register")
-    public BaseResponse register(@RequestBody Users users){
+    public BaseResponse register(@RequestBody UserRegisterVo userRegisterVo){
+        Users users = new Users();
+        BeanUtils.copyProperties(userRegisterVo, users);
         users.setIdentifer("normal");
         boolean b = usersService.addUser(users);
         return b ? ResponseUtil.success() : ResponseUtil.faliure();

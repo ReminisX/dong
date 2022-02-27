@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
 * @author ZhangXD
 * @description 针对表【users】的数据库操作Service实现
@@ -40,6 +42,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
     public boolean addUser(Users users){
         long id = IdUtil.getSnowflakeNextId();
         users.setId(id);
+        users.setCreateTime(new Date());
         int res = usersMapper.insert(users);
         if (res != 0){
             logger.info("用户[" + users.getUsername() + "]添加成功");
