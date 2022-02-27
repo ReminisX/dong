@@ -1,4 +1,4 @@
-package com.zijin.dong.config;
+package com.zijin.dong.service.Impl;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class StpInterfaceConfig implements StpInterface {
+public class StpInterfaceServiceImpl implements StpInterface {
 
     private final RolePowerMapper rolePowerMapper;
 
@@ -25,7 +25,7 @@ public class StpInterfaceConfig implements StpInterface {
     private final UsersMapper usersMapper;
 
     @Autowired
-    public StpInterfaceConfig(UsersMapper usersMapper, RolePowerMapper rolePowerMapper, UserPowerMapper userPowerMapper){
+    public StpInterfaceServiceImpl(UsersMapper usersMapper, RolePowerMapper rolePowerMapper, UserPowerMapper userPowerMapper){
         this.usersMapper = usersMapper;
         this.rolePowerMapper = rolePowerMapper;
         this.userPowerMapper = userPowerMapper;

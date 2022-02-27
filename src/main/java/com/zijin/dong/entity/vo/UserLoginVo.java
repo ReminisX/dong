@@ -14,4 +14,7 @@ public class UserLoginVo {
     @ApiModelProperty("密码")
     private String password;
 
+    @ApiModelProperty("记住我")
+    private boolean remember;
+
 }

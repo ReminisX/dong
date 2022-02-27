@@ -2,6 +2,7 @@ package com.zijin.dong.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.zijin.dong.service.Impl.StpInterfaceServiceImpl;
 import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.BaseResponse;
 import com.zijin.dong.entity.vo.UserLoginVo;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/login")
 @Api("普通用户登录相关接口")
@@ -28,17 +32,20 @@ public class LoginController {
 
     private final UsersService usersService;
 
+    private final StpInterfaceServiceImpl stpInterfaceServiceImpl;
+
     @Autowired
-    public LoginController(UsersService usersService){
+    public LoginController(UsersService usersService, StpInterfaceServiceImpl stpInterfaceServiceImpl){
         this.usersService = usersService;
+        this.stpInterfaceServiceImpl = stpInterfaceServiceImpl;
     }
 
     @ApiOperation(value = "普通用户登录", httpMethod = "POST")
     @PostMapping("/login")
     public BaseResponse login(@RequestBody UserLoginVo userLoginVo){
-        Users users = new Users();
-        BeanUtils.copyProperties(userLoginVo, users);
-        if (usersService.login(users)){
+        Users users = usersService.login(userLoginVo);
+        if (!Objects.isNull(users)){
+            List<String> permissonList = stpInterfaceServiceImpl.getPermissionList("12", "2");
             return ResponseUtil.success();
         }else{
             return ResponseUtil.faliure();
