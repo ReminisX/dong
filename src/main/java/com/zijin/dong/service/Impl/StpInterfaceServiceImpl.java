@@ -9,13 +9,13 @@ import com.zijin.dong.mapper.RolePowerMapper;
 import com.zijin.dong.mapper.UserPowerMapper;
 import com.zijin.dong.mapper.UsersMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Configuration
+@Component
 public class StpInterfaceConfig implements StpInterface {
 
     private final RolePowerMapper rolePowerMapper;

@@ -6,10 +6,12 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zijin.dong.entity.Users;
+import com.zijin.dong.entity.vo.UserLoginVo;
 import com.zijin.dong.service.UsersService;
 import com.zijin.dong.mapper.UsersMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,18 +55,25 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         }
     }
 
+    /**
+     * 用户登录
+     * @param userLoginVo
+     * @return
+     */
     @Override
-    public boolean login(Users users) {
+    public Users login(UserLoginVo userLoginVo) {
+        Users users = new Users();
+        BeanUtils.copyProperties(userLoginVo, users);
         QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", users.getUsername()).eq("password", users.getPassword());
         Users user = usersMapper.selectOne(queryWrapper);
         if (!ObjectUtil.isEmpty(user)){
-            StpUtil.login(user.getId());
+            StpUtil.login(user.getId(), userLoginVo.isRemember());
             logger.info("用户[" + users.getUsername() + "]登录成功");
-            return true;
+            return user;
         }else{
             logger.warn("用户[" + users.getUsername() + "]登录失败");
-            return false;
+            return null;
         }
     }
 
@@ -79,11 +88,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
             logger.warn(e.getLocalizedMessage());
         }
         return id != null;
-    }
-
-    @Override
-    public boolean controlUser(Long id, String operation){
-        return false;
     }
 }
 

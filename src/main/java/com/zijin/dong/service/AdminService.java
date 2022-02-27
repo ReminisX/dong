@@ -4,7 +4,7 @@ import com.zijin.dong.entity.base.Pages;
 import com.zijin.dong.entity.base.Paging;
 import com.zijin.dong.entity.Users;
 
-public interface RootService {
+public interface AdminService {
 
     Pages<Users> getAllUser(Paging paging);
 

@@ -4,7 +4,7 @@ import com.zijin.dong.entity.base.Pages;
 import com.zijin.dong.entity.base.Paging;
 import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.BaseResponse;
-import com.zijin.dong.service.RootService;
+import com.zijin.dong.service.AdminService;
 import com.zijin.dong.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/root")
 public class RootController {
 
-    private final RootService rootServiceImpl;
+    private final AdminService adminServiceImpl;
 
     @Autowired
-    public RootController(RootService rootServiceImpl) {
-        this.rootServiceImpl = rootServiceImpl;
+    public RootController(AdminService adminServiceImpl) {
+        this.adminServiceImpl = adminServiceImpl;
     }
 
     @PostMapping("/getAllUser")
     public BaseResponse getAllUser(Paging paging){
-        Pages<Users> res = rootServiceImpl.getAllUser(paging);
+        Pages<Users> res = adminServiceImpl.getAllUser(paging);
         if (res.getTotalCount() <= 0){
             return ResponseUtil.faliure().setMessage("查询列表为空");
         }else{
