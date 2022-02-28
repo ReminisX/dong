@@ -11,7 +11,7 @@ spring:
         name: defaultDataSource
         password: 123456
         url: jdbc:mysql://localhost:3306/dong?serverTimezone=UTC
-        username: abc
+        username: root
     redis:
         database: 0
         host: 172.17.0.1

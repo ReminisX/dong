@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
         if (e instanceof NotLoginException){
             errMsg = e.getLocalizedMessage();
         }else if (e instanceof NotRoleException){
-            errMsg = "无此角色: " + ((NotRoleException) e).getRole();
+            errMsg = "无此角色权限: " + ((NotRoleException) e).getRole();
         }else if (e instanceof NotPermissionException){
             errMsg = "无此权限: " + ((NotPermissionException) e).getCode();
         }else if (e instanceof DisableLoginException){

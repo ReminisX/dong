@@ -13,7 +13,7 @@ public interface UsersService extends IService<Users> {
 
     public boolean addUser(Users users);
 
-    public Users login(UserLoginVo userLoginVo);
+    public Long login(UserLoginVo userLoginVo);
 
     public boolean exit();
 

@@ -5,7 +5,6 @@ import cn.hutool.core.util.ObjectUtil;
 import com.zijin.dong.service.Impl.StpInterfaceServiceImpl;
 import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.BaseResponse;
-import com.zijin.dong.entity.vo.UserLoginVo;
 import com.zijin.dong.entity.vo.UserRegisterVo;
 import com.zijin.dong.service.UsersService;
 import com.zijin.dong.utils.ResponseUtil;
@@ -20,36 +19,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Objects;
-
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/account")
 @Api("普通用户登录相关接口")
-public class LoginController {
+public class AccountController {
 
-    private final Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     private final UsersService usersService;
 
     private final StpInterfaceServiceImpl stpInterfaceServiceImpl;
 
     @Autowired
-    public LoginController(UsersService usersService, StpInterfaceServiceImpl stpInterfaceServiceImpl){
+    public AccountController(UsersService usersService, StpInterfaceServiceImpl stpInterfaceServiceImpl){
         this.usersService = usersService;
         this.stpInterfaceServiceImpl = stpInterfaceServiceImpl;
-    }
-
-    @ApiOperation(value = "普通用户登录", httpMethod = "POST")
-    @PostMapping("/login")
-    public BaseResponse login(@RequestBody UserLoginVo userLoginVo){
-        Users users = usersService.login(userLoginVo);
-        if (!Objects.isNull(users)){
-            List<String> permissonList = stpInterfaceServiceImpl.getPermissionList("12", "2");
-            return ResponseUtil.success();
-        }else{
-            return ResponseUtil.faliure();
-        }
     }
 
     @ApiOperation(value = "普通用户注册", httpMethod = "POST")
@@ -65,7 +49,6 @@ public class LoginController {
     @ApiOperation(value = "普通用户查询自己ID", httpMethod = "POST")
     @PostMapping("/getId")
     public BaseResponse getLoginId(){
-        System.out.println(StpUtil.getSession().get("user"));
         Long id = null;
         String errMsg = "";
         try{

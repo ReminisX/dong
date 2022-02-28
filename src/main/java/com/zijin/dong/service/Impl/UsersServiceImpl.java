@@ -61,7 +61,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
      * @return
      */
     @Override
-    public Users login(UserLoginVo userLoginVo) {
+    public Long login(UserLoginVo userLoginVo) {
         Users users = new Users();
         BeanUtils.copyProperties(userLoginVo, users);
         QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
@@ -70,7 +70,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         if (!ObjectUtil.isEmpty(user)){
             StpUtil.login(user.getId(), userLoginVo.isRemember());
             logger.info("用户[" + users.getUsername() + "]登录成功");
-            return user;
+            return user.getId();
         }else{
             logger.warn("用户[" + users.getUsername() + "]登录失败");
             return null;
