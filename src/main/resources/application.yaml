@@ -11,7 +11,7 @@ spring:
         name: defaultDataSource
         password: 123456
         url: jdbc:mysql://localhost:3306/dong?serverTimezone=UTC
-        username: root
+        username: abc
     redis:
         database: 0
         host: 172.17.0.1
@@ -29,6 +29,10 @@ spring:
             password: 123456
     session:
         store-type: none
+    servlet:
+      multipart:
+          max-file-size: 500MB
+          max-request-size: 500MB
 
 # Swagger配置
 swagger:
@@ -51,6 +55,8 @@ sa-token:
     # 是否输出操作日志
     is-log: false
 
+component:
+    fileSavePath: C:\Users\ZhangXD\Desktop
 
 wechat:
     accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token
