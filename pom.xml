@@ -16,6 +16,12 @@
     </properties>
 
     <dependencies>
+        <!-- 邮件服务 -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
         <!-- springfox-swagger2 -->
         <dependency>
             <groupId>io.springfox</groupId>
