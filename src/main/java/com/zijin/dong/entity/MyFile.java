@@ -21,6 +21,12 @@ public class MyFile implements Serializable {
     private Integer id;
 
     /**
+     * 文件摘要
+     */
+    @TableId(value = "hex")
+    private String hex;
+
+    /**
      * 文件名
      */
     @TableField(value = "file_name")

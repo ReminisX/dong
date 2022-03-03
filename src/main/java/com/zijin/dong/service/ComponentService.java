@@ -1,10 +1,11 @@
 package com.zijin.dong.service;
 
+import com.zijin.dong.entity.base.DtoBase;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ComponentService {
 
-    String saveFile(MultipartFile multipartFile);
+    DtoBase saveFile(MultipartFile multipartFile);
 
     boolean delFile(String fileName);
 

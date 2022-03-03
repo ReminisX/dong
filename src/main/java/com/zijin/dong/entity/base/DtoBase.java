@@ -1,34 +1,27 @@
 package com.zijin.dong.entity.base;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-
 import java.util.HashMap;
 
-/**
- * @Author ZhangXD
- * @Date 2021/10/24 11:11
- * @Description
- */
-public class BaseResponse extends HashMap<String, Object> {
+public class DtoBase extends HashMap<String, Object> {
 
     private final String CODE = "code";
     private final String STATUS = "status";
-    private final String MESSAGE = "message";
+    private final String MESSAGE = "msg";
     private final String DATA = "data";
 
-    public BaseResponse() {
+    public DtoBase() {
         put(CODE, 200);
         put(STATUS, "unknow");
         put(MESSAGE, "未知");
     }
 
-    public BaseResponse(Integer code, String message) {
+    public DtoBase(Integer code, String message) {
         put(CODE, code);
         put(STATUS, "Success");
         put(MESSAGE, message);
     }
 
-    public BaseResponse(String code, String message) {
+    public DtoBase(String code, String message) {
         put(CODE, code);
         put(STATUS, "Failure");
         put(MESSAGE, message);
@@ -49,14 +42,15 @@ public class BaseResponse extends HashMap<String, Object> {
         }
     }
 
-    public void setCode(String code) {
+    public DtoBase setCode(String code) {
         if (containsKey(CODE)){
             remove(CODE);
         }
         put(CODE, code);
+        return this;
     }
 
-    public BaseResponse setMessage(String message) {
+    public DtoBase setMessage(String message) {
         if (containsKey(MESSAGE)){
             remove(MESSAGE);
         }
@@ -68,7 +62,7 @@ public class BaseResponse extends HashMap<String, Object> {
      * 若成功访问，则返回正确信息
      * @return
      */
-    public BaseResponse success() {
+    public DtoBase success() {
         verifyElement();
         put(STATUS, "success");
         put(CODE, 200);
@@ -80,7 +74,7 @@ public class BaseResponse extends HashMap<String, Object> {
      * 若访问失败，则返回错误信息
      * @return
      */
-    public BaseResponse failure() {
+    public DtoBase failure() {
         verifyElement();
         put(STATUS, "failure");
         put(CODE, 400);
@@ -93,7 +87,7 @@ public class BaseResponse extends HashMap<String, Object> {
      * @param obj
      * @return
      */
-    public BaseResponse addData(Object obj) {
+    public DtoBase addData(Object obj) {
         if (containsKey(DATA)){
             remove(DATA);
         }
@@ -107,7 +101,7 @@ public class BaseResponse extends HashMap<String, Object> {
      * @param obj
      * @return
      */
-    public BaseResponse addParam(String key, Object obj) {
+    public DtoBase addParam(String key, Object obj) {
         if (containsKey(key)){
             remove(key);
         }
