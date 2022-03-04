@@ -23,7 +23,7 @@ public class MyFile implements Serializable {
     /**
      * 文件摘要
      */
-    @TableId(value = "hex")
+    @TableField(value = "hex")
     private String hex;
 
     /**
