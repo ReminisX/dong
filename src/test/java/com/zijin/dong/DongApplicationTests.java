@@ -1,6 +1,7 @@
 package com.zijin.dong;
 
 import cn.hutool.core.io.FileUtil;
+import com.zijin.dong.utils.ProcessBarUtil;
 import lombok.extern.slf4j.Slf4j;
 import nonapi.io.github.classgraph.utils.FileUtils;
 import org.junit.jupiter.api.Test;
@@ -33,9 +34,17 @@ class DongApplicationTests {
 
     @Test
     void test() throws InterruptedException {
+        int size = 100;
         for (int i = 0; i < 100; i++) {
-            asyncTest.add();
+            ProcessBarUtil.showBar("上传文件", size, i, 5);
+            Thread.sleep(500);
         }
+    }
+
+    @Test
+    void t(){
+        System.out.print("abc");
+        System.out.print("\b \b");
     }
 
 }

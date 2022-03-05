@@ -11,10 +11,10 @@ import com.zijin.dong.entity.vo.UserLoginVo;
 */
 public interface UsersService extends IService<Users> {
 
-    public boolean addUser(Users users);
+    boolean addUser(Users users);
 
-    public Long login(UserLoginVo userLoginVo);
+    Long login(UserLoginVo userLoginVo);
 
-    public boolean exit();
+    boolean exit();
 
 }
