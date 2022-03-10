@@ -7,6 +7,7 @@ import com.zijin.dong.entity.RolePower;
 import com.zijin.dong.entity.Users;
 import com.zijin.dong.mapper.RolePowerMapper;
 import com.zijin.dong.mapper.UsersMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -22,6 +23,7 @@ public class SaTokenConfig implements WebMvcConfigurer {
 
     private final UsersMapper usersMapper;
 
+    @Autowired
     public SaTokenConfig(RolePowerMapper rolePowerMapper, UsersMapper usersMapper) {
         this.rolePowerMapper = rolePowerMapper;
         this.usersMapper = usersMapper;
