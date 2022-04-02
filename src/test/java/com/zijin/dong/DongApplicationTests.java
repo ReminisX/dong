@@ -1,17 +1,16 @@
 package com.zijin.dong;
 
-import cn.hutool.core.io.FileUtil;
 import com.zijin.dong.utils.ProcessBarUtil;
+import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
-import nonapi.io.github.classgraph.utils.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+
+import java.util.Objects;
 
 @SpringBootTest
 @EnableAsync
@@ -24,9 +23,12 @@ class DongApplicationTests {
     @Autowired
     private AsyncTest asyncTest;
 
+    @Autowired
+    private MinioClient minioClient;
+
     @Test
     void contextLoads() {
-        Jedis jedis = jedisPool.getResource();
+        System.out.println(Objects.isNull(minioClient));
     }
 
     @Value("${component.fileSavePath}")

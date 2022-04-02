@@ -11,10 +11,10 @@ spring:
         name: defaultDataSource
         password: 123456
         url: jdbc:mysql://localhost:3306/dong?serverTimezone=UTC
-        username: root
+        username: abc
     redis:
         database: 0
-        host: 172.17.0.1
+        host: localhost
         jedis:
             pool:
                 max-active: 100
@@ -33,6 +33,12 @@ spring:
       multipart:
           max-file-size: 500MB
           max-request-size: 500MB
+
+# minio 参数配置
+minio:
+    endpoint: http://127.0.0.1:9000
+    accessKey: minioadmin
+    secretKey: minioadmin
 
 # 数据库自动备份
 autosql:
