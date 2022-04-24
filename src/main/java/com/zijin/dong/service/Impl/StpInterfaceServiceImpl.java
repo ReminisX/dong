@@ -12,7 +12,11 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+/**
+ * 权限获取
+ */
 @Component
 public class StpInterfaceServiceImpl implements StpInterface {
 
@@ -49,15 +53,25 @@ public class StpInterfaceServiceImpl implements StpInterface {
 
     /**
      * 返回一个账号所拥有的角色标识集合 (权限与角色可分开校验)
-     * @param o 登录ID
+     * @param o 登录token
      * @param s 登录类别
      * @return 账号所拥有的角色类别
      */
     @Override
     public List<String> getRoleList(Object o, String s) {
         QueryWrapper<Users> usersQueryWrapper = new QueryWrapper<>();
-        usersQueryWrapper.eq("id", o);
+        if (!Objects.isNull(o)){
+            usersQueryWrapper.eq("id", o);
+        }
+        if (!Objects.isNull(s)){
+            usersQueryWrapper.eq("token", s);
+        }
         Users users = usersMapper.selectOne(usersQueryWrapper);
-        return new ArrayList<>(Arrays.asList(users.getIdentifer().split(",")));
+        List<String> res = new ArrayList<>();
+        if (Objects.isNull(users) || Objects.isNull(users.getIdentifer()) || users.getIdentifer().equals("")){
+            return res;
+        }
+        res.addAll(Arrays.asList(users.getIdentifer().split(",")));
+        return res;
     }
 }

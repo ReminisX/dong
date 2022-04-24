@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zijin.dong.entity.base.Paging;
 import lombok.Data;
 
@@ -62,6 +64,7 @@ public class Users extends Paging implements Serializable {
      * 账号封禁开始时间
      */
     @TableField(value = "forbid")
+    @JsonFormat()
     private Date forbid;
 
     @TableField(exist = false)

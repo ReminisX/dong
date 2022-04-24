@@ -3,6 +3,7 @@ package com.zijin.dong.controller;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.zijin.dong.entity.base.BaseResponse;
+import com.zijin.dong.entity.vo.UserInfoVo;
 import com.zijin.dong.entity.vo.UserLoginVo;
 import com.zijin.dong.service.Impl.StpInterfaceServiceImpl;
 import com.zijin.dong.service.UsersService;
@@ -43,11 +44,27 @@ public class BlankController {
             SaTokenInfo saTokenInfo = StpUtil.getTokenInfo();
             String tokenName = saTokenInfo.getTokenName();
             String tokenValue = saTokenInfo.getTokenValue();
-            List<String> powerList = stpInterfaceServiceImpl.getPermissionList(id, null);
-            return ResponseUtil.success().addParam("tokenName", tokenName).addParam("tokenValue", tokenValue).addParam("power", powerList);
+            return ResponseUtil.success().addParam("tokenName", tokenName).addParam("tokenValue", tokenValue);
         }else{
             return ResponseUtil.faliure();
         }
+    }
+
+    @PostMapping("/getUserInfo")
+    @ApiOperation(value = "用户信息获取")
+    public BaseResponse getUserInfo(@RequestBody UserInfoVo userInfoVo){
+        List<String> roleList = stpInterfaceServiceImpl.getRoleList(null, userInfoVo.getToken());
+        if (Objects.isNull(roleList)){
+            return ResponseUtil.success().addParam("roles", "");
+        }
+        return ResponseUtil.success().addParam("roles", roleList);
+    }
+
+    @ApiOperation(value = "普通用户退出", httpMethod = "POST")
+    @PostMapping("/exit")
+    public BaseResponse exit(){
+        boolean b = usersService.exit();
+        return b ? ResponseUtil.success().addData("退出成功") : ResponseUtil.faliure().addData("当前无登录账号");
     }
 
 }

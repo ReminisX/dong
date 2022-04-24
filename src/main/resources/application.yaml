@@ -2,7 +2,7 @@ mybatis:
     mapper-locations: classpath:mappers/*xml
     type-aliases-package: com.zijin.dong.mybatis.entity
 server:
-    port: 8080
+    port: 4396
 spring:
     application:
         name: dong
@@ -10,7 +10,7 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
         name: defaultDataSource
         password: 123456
-        url: jdbc:mysql://localhost:3306/dong?serverTimezone=UTC
+        url: jdbc:mysql://localhost:3306/dong?serverTimezone=Asia/Shanghai
         username: abc
     redis:
         database: 0
