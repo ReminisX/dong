@@ -44,7 +44,12 @@ public class BlankController {
             SaTokenInfo saTokenInfo = StpUtil.getTokenInfo();
             String tokenName = saTokenInfo.getTokenName();
             String tokenValue = saTokenInfo.getTokenValue();
-            return ResponseUtil.success().addParam("tokenName", tokenName).addParam("tokenValue", tokenValue);
+            List<String> roleList = stpInterfaceServiceImpl.getRoleList(null, tokenValue);
+            return ResponseUtil.success()
+                    .addParam("name", userLoginVo.getUsername())
+                    .addParam("tokenName", tokenName)
+                    .addParam("token", tokenValue)
+                    .addParam("roles", roleList);
         }else{
             return ResponseUtil.faliure();
         }
@@ -61,7 +66,7 @@ public class BlankController {
     }
 
     @ApiOperation(value = "普通用户退出", httpMethod = "POST")
-    @PostMapping("/exit")
+    @PostMapping("/logout")
     public BaseResponse exit(){
         boolean b = usersService.exit();
         return b ? ResponseUtil.success().addData("退出成功") : ResponseUtil.faliure().addData("当前无登录账号");
