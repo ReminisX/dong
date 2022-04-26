@@ -59,6 +59,7 @@ public class StpInterfaceServiceImpl implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object o, String s) {
+        List<String> res = new ArrayList<>();
         QueryWrapper<Users> usersQueryWrapper = new QueryWrapper<>();
         if (!Objects.isNull(o)){
             usersQueryWrapper.eq("id", o);
@@ -66,8 +67,10 @@ public class StpInterfaceServiceImpl implements StpInterface {
         if (!Objects.isNull(s)){
             usersQueryWrapper.eq("token", s);
         }
+        if (s.length() == 0){
+            return res;
+        }
         Users users = usersMapper.selectOne(usersQueryWrapper);
-        List<String> res = new ArrayList<>();
         if (Objects.isNull(users) || Objects.isNull(users.getIdentifer()) || users.getIdentifer().equals("")){
             return res;
         }

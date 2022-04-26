@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -57,8 +58,8 @@ public class BlankController {
 
     @PostMapping("/getUserInfo")
     @ApiOperation(value = "用户信息获取")
-    public BaseResponse getUserInfo(@RequestBody UserInfoVo userInfoVo){
-        List<String> roleList = stpInterfaceServiceImpl.getRoleList(null, userInfoVo.getToken());
+    public BaseResponse getUserInfo(@RequestParam String token){
+        List<String> roleList = stpInterfaceServiceImpl.getRoleList(null, token);
         if (Objects.isNull(roleList)){
             return ResponseUtil.success().addParam("roles", "");
         }
