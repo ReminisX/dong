@@ -12,6 +12,7 @@ import java.sql.SQLOutput;
 import java.util.Arrays;
 
 @Aspect
+@Component
 public class AopConfig {
 
     private final Logger logger = LoggerFactory.getLogger(AopConfig.class);

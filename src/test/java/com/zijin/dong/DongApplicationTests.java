@@ -1,5 +1,9 @@
 package com.zijin.dong;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zijin.dong.entity.Users;
 import com.zijin.dong.utils.ProcessBarUtil;
 import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.annotation.EnableAsync;
 import redis.clients.jedis.JedisPool;
 
-import java.util.Objects;
+import java.util.*;
 
 @SpringBootTest
 @EnableAsync
@@ -43,10 +47,23 @@ class DongApplicationTests {
         }
     }
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Test
-    void t(){
-        System.out.print("abc");
-        System.out.print("\b \b");
+    void t() throws JsonProcessingException {
+        List<Users> list = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            Users person = new Users();
+            person.setId(28374914837502L);
+            person.setNum(new Random().nextInt(100));
+            person.setCreateTime(new Date());
+            list.add(person);
+        }
+        String res = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(list);
+        List<Users> r = objectMapper.readValue(res, new TypeReference<List<Users>>() {
+        });
+        System.out.println(r);
     }
 
 }

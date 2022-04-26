@@ -28,6 +28,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- redission -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.17.0</version>
+        </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
@@ -105,6 +111,12 @@
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>1.29.0</version>
+        </dependency>
+        <!-- Sa-Token-OAuth2.0 模块 -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-oauth2</artifactId>
             <version>1.29.0</version>
         </dependency>
         <!-- 单元测试 -->

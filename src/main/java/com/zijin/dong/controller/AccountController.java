@@ -57,14 +57,7 @@ public class AccountController {
             errMsg = e.getLocalizedMessage();
             logger.error(errMsg);
         }
-        return !ObjectUtil.isEmpty(id) ? ResponseUtil.success().addData(id) : ResponseUtil.faliure().addData(errMsg);
-    }
-
-    @ApiOperation(value = "普通用户退出", httpMethod = "POST")
-    @PostMapping("/exit")
-    public BaseResponse exit(){
-        boolean b = usersService.exit();
-        return b ? ResponseUtil.success().addData("退出成功") : ResponseUtil.faliure().addData("当前无登录账号");
+        return !ObjectUtil.isEmpty(id) ? ResponseUtil.success().addParam("id", id) : ResponseUtil.faliure().addData(errMsg);
     }
 
 }

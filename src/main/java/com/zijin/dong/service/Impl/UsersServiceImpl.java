@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -61,6 +62,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
      * @return
      */
     @Override
+    @Transactional
     public Long login(UserLoginVo userLoginVo) {
         Users users = new Users();
         BeanUtils.copyProperties(userLoginVo, users);
@@ -69,6 +71,9 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         Users user = usersMapper.selectOne(queryWrapper);
         if (!ObjectUtil.isEmpty(user)){
             StpUtil.login(user.getId(), userLoginVo.isRemember());
+            user.setToken(StpUtil.getTokenValue());
+            user.setLoginTime(new Date());
+            usersMapper.updateById(user);
             logger.info("用户[" + users.getUsername() + "]登录成功");
             return user.getId();
         }else{
@@ -82,6 +87,10 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         Long id = null;
         try{
             id = StpUtil.getLoginIdAsLong();
+            Users user = new Users();
+            user.setId(id);
+            user.setToken("");
+            usersMapper.updateById(user);
             logger.info("[" + id + "]下线");
             StpUtil.logout();
         }catch (Exception e){
