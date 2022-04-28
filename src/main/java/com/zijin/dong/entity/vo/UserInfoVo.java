@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class UserInfoVo {
 
-    private String token;
+    private String username;
+
+    private String headPortrait;
 
 }

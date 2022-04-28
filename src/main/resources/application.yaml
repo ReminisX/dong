@@ -36,7 +36,7 @@ spring:
 
 # minio 参数配置
 minio:
-    endpoint: http://127.0.0.1:9000
+    endpoint: http://192.168.32.129:9000
     accessKey: minioadmin
     secretKey: minioadmin
 

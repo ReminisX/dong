@@ -6,9 +6,14 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zijin.dong.entity.Users;
+import com.zijin.dong.entity.vo.UserInfoVo;
 import com.zijin.dong.entity.vo.UserLoginVo;
 import com.zijin.dong.service.UsersService;
 import com.zijin.dong.mapper.UsersMapper;
+import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.MinioClient;
+import io.minio.errors.*;
+import io.minio.http.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -16,7 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
 * @author ZhangXD
@@ -31,9 +40,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
 
     private final UsersMapper usersMapper;
 
+    private MinioClient minioClient;
+
+    private final String DEFAULT_HEAD_AVATAR = "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif";
+
     @Autowired
-    public UsersServiceImpl(UsersMapper usersMapper){
+    public UsersServiceImpl(UsersMapper usersMapper, MinioClient minioClient){
         this.usersMapper = usersMapper;
+        this.minioClient = minioClient;
     }
 
     /**
@@ -54,6 +68,34 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
             logger.warn("用户[" + users.getUsername() + "]添加失败");
             return false;
         }
+    }
+
+    @Override
+    public UserInfoVo getUserInfo(String token) {
+        UserInfoVo userInfoVo = new UserInfoVo();
+        // 用户数据库信息
+        QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("token", token);
+        queryWrapper.select("username");
+        Users users = usersMapper.selectOne(queryWrapper);
+        String username = users.getUsername();
+        // 用户头像获取
+        String avatar = DEFAULT_HEAD_AVATAR;
+        try {
+            avatar = minioClient.getPresignedObjectUrl(
+                    GetPresignedObjectUrlArgs.builder()
+                            .method(Method.GET)
+                            .bucket("head-portrait")
+                            .object(username + "-head-portrait.jpeg")
+//                            .expiry(24, TimeUnit.HOURS)
+                            .build());
+        } catch (Exception e) {
+            logger.error("用户【" + username + "】头像获取失败，使用默认头像");
+        }
+        // 用户信息整合
+        userInfoVo.setUsername(username);
+        userInfoVo.setHeadPortrait(avatar);
+        return userInfoVo;
     }
 
     /**
