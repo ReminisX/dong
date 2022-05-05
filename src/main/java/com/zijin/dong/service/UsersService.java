@@ -2,6 +2,7 @@ package com.zijin.dong.service;
 
 import com.zijin.dong.entity.Users;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zijin.dong.entity.vo.RegisterUserVo;
 import com.zijin.dong.entity.vo.UserInfoVo;
 import com.zijin.dong.entity.vo.UserLoginVo;
 
@@ -12,7 +13,7 @@ import com.zijin.dong.entity.vo.UserLoginVo;
 */
 public interface UsersService extends IService<Users> {
 
-    boolean addUser(Users users);
+    boolean addUser(RegisterUserVo registerUserVo);
 
     UserInfoVo getUserInfo(String token);
 

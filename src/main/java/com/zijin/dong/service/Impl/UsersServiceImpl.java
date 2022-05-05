@@ -6,13 +6,13 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zijin.dong.entity.Users;
+import com.zijin.dong.entity.vo.RegisterUserVo;
 import com.zijin.dong.entity.vo.UserInfoVo;
 import com.zijin.dong.entity.vo.UserLoginVo;
 import com.zijin.dong.service.UsersService;
 import com.zijin.dong.mapper.UsersMapper;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
-import io.minio.errors.*;
 import io.minio.http.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
 * @author ZhangXD
@@ -52,20 +48,24 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
 
     /**
      * 注册新用户
-     * @param users 用户实体
+     * @param registerUserVo 用户实体
      * @return 是否成功
      */
     @Override
-    public boolean addUser(Users users){
+    public boolean addUser(RegisterUserVo registerUserVo){
         long id = IdUtil.getSnowflakeNextId();
-        users.setId(id);
-        users.setCreateTime(new Date());
-        int res = usersMapper.insert(users);
+        Users user = new Users();
+        user.setId(id);
+        user.setCreateTime(new Date());
+        user.setUsername(registerUserVo.getName());
+        user.setPassword(registerUserVo.getPass());
+        user.setIdentifer(registerUserVo.getPower());
+        int res = usersMapper.insert(user);
         if (res != 0){
-            logger.info("用户[" + users.getUsername() + "]添加成功");
+            logger.info("用户[" + user.getUsername() + "]添加成功");
             return true;
         }else{
-            logger.warn("用户[" + users.getUsername() + "]添加失败");
+            logger.warn("用户[" + user.getUsername() + "]添加失败");
             return false;
         }
     }

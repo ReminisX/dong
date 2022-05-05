@@ -36,16 +36,6 @@ public class AccountController {
         this.stpInterfaceServiceImpl = stpInterfaceServiceImpl;
     }
 
-    @ApiOperation(value = "普通用户注册", httpMethod = "POST")
-    @PostMapping("/register")
-    public BaseResponse register(@RequestBody UserRegisterVo userRegisterVo){
-        Users users = new Users();
-        BeanUtils.copyProperties(userRegisterVo, users);
-        users.setIdentifer("normal");
-        boolean b = usersService.addUser(users);
-        return b ? ResponseUtil.success() : ResponseUtil.faliure();
-    }
-
     @ApiOperation(value = "普通用户查询自己ID", httpMethod = "POST")
     @PostMapping("/getId")
     public BaseResponse getLoginId(){
