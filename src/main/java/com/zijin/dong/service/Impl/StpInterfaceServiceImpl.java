@@ -63,11 +63,9 @@ public class StpInterfaceServiceImpl implements StpInterface {
         QueryWrapper<Users> usersQueryWrapper = new QueryWrapper<>();
         if (!Objects.isNull(o)){
             usersQueryWrapper.eq("id", o);
-        }
-        if (!Objects.isNull(s)){
+        }else if (!Objects.isNull(s)){
             usersQueryWrapper.eq("token", s);
-        }
-        if (s.length() == 0){
+        }else{
             return res;
         }
         Users users = usersMapper.selectOne(usersQueryWrapper);
