@@ -25,9 +25,6 @@ class DongApplicationTests {
     private JedisPool jedisPool;
 
     @Autowired
-    private AsyncTest asyncTest;
-
-    @Autowired
     private MinioClient minioClient;
 
     @Test
