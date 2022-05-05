@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zijin.dong.entity.Users;
 import com.zijin.dong.utils.ProcessBarUtil;
+import io.minio.BucketExistsArgs;
 import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -36,12 +37,8 @@ class DongApplicationTests {
     private String fileSavePath;
 
     @Test
-    void test() throws InterruptedException {
-        int size = 100;
-        for (int i = 0; i < 100; i++) {
-            ProcessBarUtil.showBar("上传文件", size, i, 5);
-            Thread.sleep(500);
-        }
+    void test() {
+        BucketExistsArgs b = new BucketExistsArgs();
     }
 
     @Autowired

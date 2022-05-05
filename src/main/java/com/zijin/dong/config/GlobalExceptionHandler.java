@@ -56,6 +56,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public BaseResponse handlerException(Exception e, HttpServletRequest request, HttpServletResponse response){
         logger.error(e.getLocalizedMessage());
+        logger.warn("token为:" + request.getHeader("satoken"));
         String errMsg = "";
         if (e instanceof NotLoginException){
             errMsg = e.getLocalizedMessage();
