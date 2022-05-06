@@ -39,9 +39,9 @@ public class RootController {
     }
 
     @PostMapping("/register")
-    public BaseResponse register(RegisterUserVo registerUserVo){
+    public BaseResponse register(@RequestBody RegisterUserVo registerUserVo){
         boolean res = usersServiceImpl.addUser(registerUserVo);
-        return res ? ResponseUtil.success() : ResponseUtil.faliure();
+        return res ? ResponseUtil.success() : ResponseUtil.faliure().addParam("message", "重复创建用户");
     }
 
 }

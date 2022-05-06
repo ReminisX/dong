@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/account")
@@ -34,11 +38,12 @@ public class AccountController {
     public AccountController(UsersService usersService, StpInterfaceServiceImpl stpInterfaceServiceImpl){
         this.usersService = usersService;
         this.stpInterfaceServiceImpl = stpInterfaceServiceImpl;
+        RequestMappingHandlerAdapter r;
     }
 
     @ApiOperation(value = "普通用户查询自己ID", httpMethod = "POST")
     @PostMapping("/getId")
-    public BaseResponse getLoginId(){
+    public BaseResponse getLoginId(HttpServletRequest request){
         Long id = null;
         String errMsg = "";
         try{

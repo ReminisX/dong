@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
 * @author ZhangXD
@@ -52,12 +53,22 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
      * @return 是否成功
      */
     @Override
+    @Transactional
     public boolean addUser(RegisterUserVo registerUserVo){
         long id = IdUtil.getSnowflakeNextId();
         Users user = new Users();
+        // 查询是否存在该id
+        QueryWrapper<Users> selectWrapper = new QueryWrapper<>();
+        selectWrapper.eq("username", registerUserVo.getName());
+        selectWrapper.select("id");
+        Users isExist = usersMapper.selectOne(selectWrapper);
+        if (!Objects.isNull(isExist)){
+            return false;
+        }
+        // 插入该对象
         user.setId(id);
-        user.setCreateTime(new Date());
         user.setUsername(registerUserVo.getName());
+        user.setCreateTime(new Date());
         user.setPassword(registerUserVo.getPass());
         user.setIdentifer(registerUserVo.getPower());
         int res = usersMapper.insert(user);

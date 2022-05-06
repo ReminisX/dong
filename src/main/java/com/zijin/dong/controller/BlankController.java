@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,20 +42,24 @@ public class BlankController {
 
     @PostMapping("/login")
     @ApiOperation(value = "普通用户登录接口", httpMethod = "POST")
-    public BaseResponse login(@RequestBody UserLoginVo userLoginVo){
+    public ResponseEntity<BaseResponse> login(@RequestBody UserLoginVo userLoginVo){
         Long id = usersService.login(userLoginVo);
         if (!Objects.isNull(id)){
             SaTokenInfo saTokenInfo = StpUtil.getTokenInfo();
             String tokenName = saTokenInfo.getTokenName();
             String tokenValue = saTokenInfo.getTokenValue();
             List<String> roleList = stpInterfaceServiceImpl.getRoleList(null, tokenValue);
-            return ResponseUtil.success()
-                    .addParam("name", userLoginVo.getUsername())
-                    .addParam("tokenName", tokenName)
-                    .addParam("token", tokenValue)
-                    .addParam("roles", roleList);
+            return ResponseEntity.ok(
+                    ResponseUtil.success()
+                            .addParam("name", userLoginVo.getUsername())
+                            .addParam("tokenName", tokenName)
+                            .addParam("token", tokenValue)
+                            .addParam("roles", roleList)
+            );
         }else{
-            return ResponseUtil.faliure();
+            return ResponseEntity.badRequest().body(
+                    ResponseUtil.faliure()
+            );
         }
     }
 
