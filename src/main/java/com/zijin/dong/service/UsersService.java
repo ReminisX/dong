@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.zijin.dong.entity.vo.RegisterUserVo;
 import com.zijin.dong.entity.vo.UserInfoVo;
 import com.zijin.dong.entity.vo.UserLoginVo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
 * @author ZhangXD
@@ -21,4 +22,5 @@ public interface UsersService extends IService<Users> {
 
     boolean exit();
 
+    String uploadHead(MultipartFile multipartFile);
 }

@@ -20,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.Objects;
@@ -150,6 +151,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
             logger.warn(e.getLocalizedMessage());
         }
         return id != null;
+    }
+
+    @Override
+    public String uploadHead(MultipartFile multipartFile) {
+        String imgUrl = null;
+
+
+        return imgUrl;
     }
 }
 

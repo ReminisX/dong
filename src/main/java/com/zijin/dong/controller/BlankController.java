@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -82,6 +83,17 @@ public class BlankController {
     public BaseResponse exit(){
         boolean b = usersService.exit();
         return b ? ResponseUtil.success().addData("退出成功") : ResponseUtil.success().addData("当前无登录账号");
+    }
+
+    @PostMapping("/fileUpload")
+    public BaseResponse uploadHead(MultipartFile file){
+        
+        String imgUrl = usersService.uploadHead(file);
+        if (Objects.isNull(imgUrl)){
+            return ResponseUtil.faliure();
+        }else{
+            return ResponseUtil.success().addParam("imgUrl", imgUrl);
+        }
     }
 
 }
