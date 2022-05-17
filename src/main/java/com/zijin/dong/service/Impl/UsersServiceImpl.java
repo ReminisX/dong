@@ -99,7 +99,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
                             .method(Method.GET)
                             .bucket("head-portrait")
                             .object(username + "-head-portrait.jpeg")
-//                            .expiry(24, TimeUnit.HOURS)
                             .build());
         } catch (Exception e) {
             logger.error("用户【" + username + "】头像获取失败，使用默认头像");

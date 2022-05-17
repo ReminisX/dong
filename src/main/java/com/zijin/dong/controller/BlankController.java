@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.locks.ReentrantLock;
 
 @RestController
 @Api("通用无拦截接口")
@@ -87,7 +88,7 @@ public class BlankController {
 
     @PostMapping("/fileUpload")
     public BaseResponse uploadHead(MultipartFile file){
-        
+
         String imgUrl = usersService.uploadHead(file);
         if (Objects.isNull(imgUrl)){
             return ResponseUtil.faliure();
