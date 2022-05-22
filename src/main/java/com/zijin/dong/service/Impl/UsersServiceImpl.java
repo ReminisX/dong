@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Objects;
 
@@ -148,8 +149,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
     @Override
     public String uploadHead(MultipartFile multipartFile) {
         String imgUrl = null;
-
-
+        String bucket = "head-portrait";
+        String fileName = "";
+        try {
+            minioUtil.upload(bucket, fileName, multipartFile.getInputStream());
+        } catch (IOException e) {
+            logger.error("头像上传失败");
+        }
+        imgUrl = minioUtil.getObjectUrl(bucket, fileName);
         return imgUrl;
     }
 }

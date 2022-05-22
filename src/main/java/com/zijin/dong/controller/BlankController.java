@@ -2,8 +2,6 @@ package com.zijin.dong.controller;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.BaseResponse;
 import com.zijin.dong.entity.vo.UserInfoVo;
 import com.zijin.dong.entity.vo.UserLoginVo;
@@ -24,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.locks.ReentrantLock;
 
 @RestController
 @Api("通用无拦截接口")
@@ -88,7 +85,6 @@ public class BlankController {
 
     @PostMapping("/fileUpload")
     public BaseResponse uploadHead(MultipartFile file){
-
         String imgUrl = usersService.uploadHead(file);
         if (Objects.isNull(imgUrl)){
             return ResponseUtil.faliure();
