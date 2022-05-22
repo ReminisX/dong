@@ -9,11 +9,9 @@ import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.vo.RegisterUserVo;
 import com.zijin.dong.entity.vo.UserInfoVo;
 import com.zijin.dong.entity.vo.UserLoginVo;
-import com.zijin.dong.service.UsersService;
 import com.zijin.dong.mapper.UsersMapper;
-import io.minio.GetPresignedObjectUrlArgs;
-import io.minio.MinioClient;
-import io.minio.http.Method;
+import com.zijin.dong.service.UsersService;
+import com.zijin.dong.utils.MinioUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -38,14 +36,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
 
     private final UsersMapper usersMapper;
 
-    private MinioClient minioClient;
+    private final MinioUtil minioUtil;
 
     private final String DEFAULT_HEAD_AVATAR = "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif";
 
     @Autowired
-    public UsersServiceImpl(UsersMapper usersMapper, MinioClient minioClient){
+    public UsersServiceImpl(UsersMapper usersMapper, MinioUtil minioUtil){
         this.usersMapper = usersMapper;
-        this.minioClient = minioClient;
+        this.minioUtil = minioUtil;
     }
 
     /**
@@ -93,15 +91,10 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         String username = users.getUsername();
         // 用户头像获取
         String avatar = DEFAULT_HEAD_AVATAR;
-        try {
-            avatar = minioClient.getPresignedObjectUrl(
-                    GetPresignedObjectUrlArgs.builder()
-                            .method(Method.GET)
-                            .bucket("head-portrait")
-                            .object(username + "-head-portrait.jpeg")
-                            .build());
-        } catch (Exception e) {
-            logger.error("用户【" + username + "】头像获取失败，使用默认头像");
+        if (!Objects.isNull(users.getHeadImg()) && users.getHeadImg().length() > 0) {
+            avatar = minioUtil.getObjectUrl("head-portrait", users.getHeadImg());
+        }else {
+            logger.warn("用户头像信息为空，使用默认头像");
         }
         // 用户信息整合
         userInfoVo.setUsername(username);

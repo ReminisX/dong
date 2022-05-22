@@ -31,3 +31,6 @@ build/
 .vscode/
 .mvn
 src/test
+out
+src/test
+META-INF

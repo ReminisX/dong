@@ -3,13 +3,12 @@ package com.zijin.dong.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zijin.dong.entity.base.Paging;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 
@@ -66,6 +65,12 @@ public class Users extends Paging implements Serializable {
     @TableField(value = "forbid")
     @JsonFormat()
     private Date forbid;
+
+    /**
+     * 头像路径
+     */
+    @TableField(value = "head_img")
+    private String headImg;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

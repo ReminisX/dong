@@ -1,4 +1,4 @@
-package com.zijin.dong.service.impl;
+package com.zijin.dong.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zijin.dong.entity.Area;

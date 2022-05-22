@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 
@@ -19,6 +20,12 @@ public class Area implements Serializable {
      */
     @TableId(value = "rid", type = IdType.AUTO)
     private Integer rid;
+
+    /**
+     * 地域id
+     */
+    @TableField(value = "area_id")
+    private String areaId;
 
     /**
      * 地域名称

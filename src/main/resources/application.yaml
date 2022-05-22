@@ -9,18 +9,27 @@ spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
         name: defaultDataSource
-        password: 123456
-        url: jdbc:mysql://localhost:3306/dong?serverTimezone=Asia/Shanghai
-        username: abc
+        password: 97wasd1212
+        url: jdbc:mysql://121.36.131.38:3306/dong?serverTimezone=Asia/Shanghai
+        username: reminis
+        hikari:
+            connection-timeout: 10000
+            validation-timeout: 3000
+            idle-timeout: 60000
+            login-timeout: 5
+            max-lifetime: 60000
+            maximum-pool-size: 10
+            minimum-idle: 5
+            read-only: false
     redis:
         database: 0
-        host: localhost
+        host: 121.36.131.38
         jedis:
             pool:
                 max-active: 100
                 max-idle: 20
                 min-idle: 5
-        password: ''
+        password: '97Wasd1212'
         port: 6379
         timeout: 1000
     security:
@@ -36,9 +45,9 @@ spring:
 
 # minio 参数配置
 minio:
-    endpoint: http://192.168.32.129:9000
-    accessKey: minioadmin
-    secretKey: minioadmin
+    endpoint: http://121.36.131.38:9000
+    accessKey: reminis
+    secretKey: 97Wasd1212
 
 # 数据库自动备份
 autosql:
