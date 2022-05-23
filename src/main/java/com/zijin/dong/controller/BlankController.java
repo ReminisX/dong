@@ -83,14 +83,4 @@ public class BlankController {
         return b ? ResponseUtil.success().addData("退出成功") : ResponseUtil.success().addData("当前无登录账号");
     }
 
-    @PostMapping("/fileUpload")
-    public BaseResponse uploadHead(MultipartFile file){
-        String imgUrl = usersService.uploadHead(file);
-        if (Objects.isNull(imgUrl)){
-            return ResponseUtil.faliure();
-        }else{
-            return ResponseUtil.success().addParam("imgUrl", imgUrl);
-        }
-    }
-
 }

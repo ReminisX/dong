@@ -22,5 +22,5 @@ public interface UsersService extends IService<Users> {
 
     boolean exit();
 
-    String uploadHead(MultipartFile multipartFile);
+    String uploadHead(MultipartFile multipartFile, String fileName);
 }

@@ -2,6 +2,7 @@ package com.zijin.dong.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.zijin.dong.entity.base.UploadData;
 import com.zijin.dong.service.Impl.StpInterfaceServiceImpl;
 import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.BaseResponse;
@@ -14,14 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/account")
@@ -53,6 +53,16 @@ public class AccountController {
             logger.error(errMsg);
         }
         return !ObjectUtil.isEmpty(id) ? ResponseUtil.success().addParam("id", id) : ResponseUtil.faliure().addData(errMsg);
+    }
+
+    @PostMapping("/fileUpload")
+    public BaseResponse uploadHead(MultipartFile file, UploadData data){
+        String imgUrl = usersService.uploadHead(file, data.getName());
+        if (Objects.isNull(imgUrl)){
+            return ResponseUtil.faliure();
+        }else{
+            return ResponseUtil.success().addParam("imgUrl", imgUrl);
+        }
     }
 
 }

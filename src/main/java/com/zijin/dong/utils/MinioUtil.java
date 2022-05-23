@@ -3,6 +3,7 @@ package com.zijin.dong.utils;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class MinioUtil {
      * minio文件上传
      * @return 是否上传成功
      */
+    @SneakyThrows
     public boolean upload(String bucket, String fileName, InputStream inputStream) {
         MakeBucketArgs makeBucketArgs = MakeBucketArgs
                 .builder()
@@ -56,6 +58,8 @@ public class MinioUtil {
         } catch (ErrorResponseException | InsufficientDataException | InternalException | XmlParserException | NoSuchAlgorithmException | ServerException | InvalidResponseException | InvalidKeyException | IOException e) {
             logger.error("文件上传异常");
             return false;
+        } finally {
+            inputStream.close();
         }
         return true;
     }
