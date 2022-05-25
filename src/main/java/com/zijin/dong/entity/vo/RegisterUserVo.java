@@ -11,4 +11,6 @@ public class RegisterUserVo {
 
     private String power;
 
+    private String imgUrl;
+
 }

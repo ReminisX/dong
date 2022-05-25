@@ -72,6 +72,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         user.setCreateTime(new Date());
         user.setPassword(registerUserVo.getPass());
         user.setIdentifer(registerUserVo.getPower());
+
+        user.setHeadImg(registerUserVo.getImgUrl());
         int res = usersMapper.insert(user);
         if (res != 0){
             logger.info("用户[" + user.getUsername() + "]添加成功");
