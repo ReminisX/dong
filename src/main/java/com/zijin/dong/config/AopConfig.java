@@ -44,30 +44,6 @@ public class AopConfig {
     @AfterReturning(value = "controllerLog()", returning = "returnValue")
     public void afterController(JoinPoint joinPoint, Object returnValue){
         Object[] args = joinPoint.getArgs();
-
-        Signature signature = joinPoint.getSignature();
-        System.out.println("signature:" + signature);
-        System.out.println(signature.toLongString());
-        // 切分参数类型
-        String signatureStr = signature.toLongString();
-        int index = 0;
-        for (int i = 0; i < signatureStr.length(); i++) {
-            if (signatureStr.charAt(i) == '('){
-                index = i;
-            }
-        }
-        String[] argsClasses = signatureStr.substring(index+1, signatureStr.length()-1).split(",");
-        System.out.println(Arrays.toString(argsClasses));
-        // 参数类型判断
-        for(String argsClass : argsClasses){
-            System.out.println(String.class);
-            if (String.class.toString().equals(argsClass)){
-                System.out.println("success");
-            }
-        }
-
-
-
         String functionName = joinPoint.getSignature().getName();
         StringBuilder sb = new StringBuilder();
         sb.append(functionName);
@@ -80,9 +56,6 @@ public class AopConfig {
         logger.info(sb.toString());
         String log = functionName + ": 返回的参数为[" + returnValue + "]";
         logger.info(log);
-//        String functionName = joinPoint.getSignature().getName();
-//        String log = functionName + ": 返回的参数为[" + returnValue + "]";
-//        logger.info(log);
     }
 
     @AfterReturning(value = "testLog()", returning = "returnValue")

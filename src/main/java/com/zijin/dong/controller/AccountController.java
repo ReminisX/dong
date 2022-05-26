@@ -57,11 +57,11 @@ public class AccountController {
 
     @PostMapping("/fileUpload")
     public BaseResponse uploadHead(MultipartFile file, UploadData data){
-        String imgUrl = usersService.uploadHead(file, data.getName());
-        if (Objects.isNull(imgUrl)){
+        boolean b = usersService.uploadHead(file, data.getName());
+        if (!b){
             return ResponseUtil.faliure();
         }else{
-            return ResponseUtil.success().addParam("imgUrl", imgUrl);
+            return ResponseUtil.success();
         }
     }
 

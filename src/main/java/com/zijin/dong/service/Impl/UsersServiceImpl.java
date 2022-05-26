@@ -3,6 +3,7 @@ package com.zijin.dong.service.Impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zijin.dong.entity.Users;
@@ -72,7 +73,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         user.setCreateTime(new Date());
         user.setPassword(registerUserVo.getPass());
         user.setIdentifer(registerUserVo.getPower());
-
         user.setHeadImg(registerUserVo.getImgUrl());
         int res = usersMapper.insert(user);
         if (res != 0){
@@ -90,7 +90,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         // 用户数据库信息
         QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("token", token);
-        queryWrapper.select("username");
         Users users = usersMapper.selectOne(queryWrapper);
         String username = users.getUsername();
         // 用户头像获取
@@ -150,20 +149,25 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
     }
 
     @Override
-    public String uploadHead(MultipartFile multipartFile, String name) {
-        String imgUrl = null;
+    @Transactional
+    public boolean uploadHead(MultipartFile multipartFile, String name) {
         String bucket = "head-portrait";
         String[] fileNames = Objects.requireNonNull(multipartFile.getOriginalFilename()).split("\\.");
         String fileType = fileNames[fileNames.length-1];
         String fileName = name + "-head-portrait." + fileType;
         try {
             minioUtil.upload(bucket, fileName, multipartFile.getInputStream());
+            Users user = new Users();
+            user.setUsername(name);
+            user.setHeadImg(fileName);
+            QueryWrapper<Users> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("username", name);
+            usersMapper.update(user, queryWrapper);
         } catch (IOException e) {
             logger.error("头像上传失败");
-            return "";
+            return false;
         }
-        imgUrl = minioUtil.getObjectUrl(bucket, fileName);
-        return imgUrl;
+        return true;
     }
 }
 
