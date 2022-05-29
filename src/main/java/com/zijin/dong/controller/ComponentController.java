@@ -1,5 +1,6 @@
 package com.zijin.dong.controller;
 
+import com.zijin.dong.annotation.LogAnnotation;
 import com.zijin.dong.entity.base.BaseResponse;
 import com.zijin.dong.entity.base.DtoBase;
 import com.zijin.dong.service.ComponentService;
@@ -29,6 +30,7 @@ public class ComponentController {
 
     @PostMapping("/upload")
     @ApiOperation(value = "文件上传接口", httpMethod = "POST")
+    @LogAnnotation(value = "上传文件")
     public BaseResponse uploadFile(MultipartFile multipartFile){
         DtoBase dto = componentServiceImpl.saveFile(multipartFile);
         if (Objects.isNull(dto) || dto.isEmpty() || !dto.get("code").equals("200")){
@@ -42,6 +44,7 @@ public class ComponentController {
     }
 
     @PostMapping("/del")
+    @LogAnnotation(value = "删除文件")
     public BaseResponse delFile(@RequestBody String fileName){
         boolean res = componentServiceImpl.delFile(fileName);
         if (res){

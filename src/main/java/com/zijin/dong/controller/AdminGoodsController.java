@@ -1,5 +1,6 @@
 package com.zijin.dong.controller;
 
+import com.zijin.dong.annotation.LogAnnotation;
 import com.zijin.dong.entity.Goods;
 import com.zijin.dong.entity.base.BaseResponse;
 import com.zijin.dong.entity.base.Pages;
@@ -26,6 +27,7 @@ public class AdminGoodsController {
 
     @PostMapping("/all")
     @ApiOperation("查询全部商品")
+    @LogAnnotation(value = "查询全部商品")
     public BaseResponse queryAllGoods(@RequestBody Paging paging){
         Pages<Goods> res = goodsService.queryAllGoods(paging);
         if (res.getTotalCount() > 0){
@@ -35,6 +37,7 @@ public class AdminGoodsController {
         }
     }
 
+    @LogAnnotation(value = "添加商品")
     public BaseResponse addGoods(@RequestBody Goods goods){
         boolean res = goodsService.addGoods(goods);
         if (res){

@@ -2,6 +2,7 @@ package com.zijin.dong.controller;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import com.zijin.dong.annotation.LogAnnotation;
 import com.zijin.dong.entity.base.BaseResponse;
 import com.zijin.dong.entity.vo.UserInfoVo;
 import com.zijin.dong.entity.vo.UserLoginVo;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +41,7 @@ public class BlankController {
 
     @PostMapping("/login")
     @ApiOperation(value = "普通用户登录接口", httpMethod = "POST")
+    @LogAnnotation(value = "登录")
     public ResponseEntity<BaseResponse> login(@RequestBody UserLoginVo userLoginVo){
         Long id = usersService.login(userLoginVo);
         if (!Objects.isNull(id)){
@@ -64,6 +65,7 @@ public class BlankController {
 
     @PostMapping("/getUserInfo")
     @ApiOperation(value = "用户信息获取")
+    @LogAnnotation(value = "获取用户信息")
     public BaseResponse getUserInfo(@RequestParam String token){
         List<String> roleList = stpInterfaceServiceImpl.getRoleList(null, token);
         UserInfoVo userInfoVo = usersService.getUserInfo(token);
@@ -78,6 +80,7 @@ public class BlankController {
 
     @ApiOperation(value = "普通用户退出", httpMethod = "POST")
     @PostMapping("/logout")
+    @LogAnnotation(value = "退出")
     public BaseResponse exit(){
         boolean b = usersService.exit();
         return b ? ResponseUtil.success().addData("退出成功") : ResponseUtil.success().addData("当前无登录账号");
