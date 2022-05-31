@@ -5,12 +5,9 @@ import com.zijin.dong.annotation.LogAnnotation;
 import com.zijin.dong.component.UserComponent;
 import com.zijin.dong.entity.UserLogs;
 import com.zijin.dong.mapper.UserLogsMapper;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +31,6 @@ public class LogAopConfig {
         this.userLogsMapper = userLogsMapper;
         this.userComponent = userComponent;
     }
-
-    @Pointcut("@annotation(com.zijin.dong.annotation.LogAnnotation)")
-    public void myLogAspect(){}
 
     @Around(value = "@annotation(logAnnotation)")
     public Object logMethod(ProceedingJoinPoint joinPoint, LogAnnotation logAnnotation) {

@@ -75,6 +75,6 @@ public class GlobalExceptionHandler {
         if (errMsg.length() > 50){
             errMsg = errMsg.split("\\.")[0];
         }
-        return ResponseUtil.success().setMessage(errMsg);
+        return ResponseUtil.faliure().setMessage(errMsg);
     }
 }
