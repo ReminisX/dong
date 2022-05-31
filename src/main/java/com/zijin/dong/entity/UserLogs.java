@@ -33,6 +33,16 @@ public class UserLogs implements Serializable {
     private String operation;
 
     /**
+     * 入参
+     */
+    private String input;
+
+    /**
+     * 返回结果
+     */
+    private String result;
+
+    /**
      * 操作时间
      */
     private LocalDateTime time;

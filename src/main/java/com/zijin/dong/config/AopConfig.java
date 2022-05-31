@@ -34,7 +34,9 @@ public class AopConfig {
         for (Object obj: args) {
             sb.append(obj + ",");
         }
-        sb.delete(sb.length()-1, sb.length());
+        if (args.length != 0){
+            sb.delete(sb.length()-1, sb.length());
+        }
         sb.append("]");
         logger.info(sb.toString());
     }
@@ -43,15 +45,15 @@ public class AopConfig {
     public void afterController(JoinPoint joinPoint, Object returnValue){
         Object[] args = joinPoint.getArgs();
         String functionName = joinPoint.getSignature().getName();
-        StringBuilder sb = new StringBuilder();
-        sb.append(functionName);
-        sb.append(": 收到的参数为[");
+        StringBuilder inputParam = new StringBuilder();
+        inputParam.append(functionName);
+        inputParam.append(": 收到的参数为[");
         for (Object obj: args) {
-            sb.append(obj + ",");
+            inputParam.append(obj + ",");
         }
-        sb.delete(sb.length()-1, sb.length());
-        sb.append("]");
-        logger.info(sb.toString());
+        inputParam.delete(inputParam.length()-1, inputParam.length());
+        inputParam.append("]");
+        logger.info(inputParam.toString());
         String log = functionName + ": 返回的参数为[" + returnValue + "]";
         logger.info(log);
     }
