@@ -69,10 +69,10 @@ public class StpInterfaceServiceImpl implements StpInterface {
             return res;
         }
         Users users = usersMapper.selectOne(usersQueryWrapper);
-        if (Objects.isNull(users) || Objects.isNull(users.getIdentifer()) || users.getIdentifer().equals("")){
+        if (Objects.isNull(users) || Objects.isNull(users.getPower()) || users.getPower().equals("")){
             return res;
         }
-        res.addAll(Arrays.asList(users.getIdentifer().split(",")));
+        res.addAll(Arrays.asList(users.getPower().split(",")));
         return res;
     }
 }

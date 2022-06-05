@@ -3,7 +3,6 @@ package com.zijin.dong.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zijin.dong.entity.base.Paging;
 import lombok.Data;
 
@@ -38,8 +37,8 @@ public class Users extends Paging implements Serializable {
     /**
      * 身份
      */
-    @TableField(value = "identifer")
-    private String identifer;
+    @TableField(value = "power")
+    private String power;
 
     /**
      * 账号创建时间
@@ -63,7 +62,6 @@ public class Users extends Paging implements Serializable {
      * 账号封禁开始时间
      */
     @TableField(value = "forbid")
-    @JsonFormat()
     private Date forbid;
 
     /**
@@ -71,6 +69,12 @@ public class Users extends Paging implements Serializable {
      */
     @TableField(value = "head_img")
     private String headImg;
+
+    /**
+     * 账号状态
+     */
+    @TableField(value = "status")
+    private String status;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

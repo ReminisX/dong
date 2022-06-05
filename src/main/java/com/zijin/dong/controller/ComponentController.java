@@ -5,8 +5,6 @@ import com.zijin.dong.entity.base.BaseResponse;
 import com.zijin.dong.entity.base.DtoBase;
 import com.zijin.dong.service.ComponentService;
 import com.zijin.dong.utils.ResponseUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +16,6 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/component")
-@Api("组件功能")
 public class ComponentController {
 
     private final ComponentService componentServiceImpl;
@@ -29,7 +26,6 @@ public class ComponentController {
     }
 
     @PostMapping("/upload")
-    @ApiOperation(value = "文件上传接口", httpMethod = "POST")
     @LogAnnotation(value = "上传文件")
     public BaseResponse uploadFile(MultipartFile multipartFile){
         DtoBase dto = componentServiceImpl.saveFile(multipartFile);

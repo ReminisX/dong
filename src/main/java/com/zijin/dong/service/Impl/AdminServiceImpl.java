@@ -1,19 +1,22 @@
 package com.zijin.dong.service.Impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zijin.dong.entity.base.Paging;
 import com.zijin.dong.entity.Users;
+import com.zijin.dong.entity.base.Pages;
+import com.zijin.dong.entity.base.Paging;
+import com.zijin.dong.entity.vo.UserManagerVo;
 import com.zijin.dong.mapper.UsersMapper;
 import com.zijin.dong.service.AdminService;
-import com.zijin.dong.entity.base.Pages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,17 +38,30 @@ public class AdminServiceImpl implements AdminService {
      * @return
      */
     @Override
-    public Pages<Users> getAllUser(Paging paging) {
-        Pages<Users> pages;
+    public Pages<UserManagerVo> getAllUser(Paging paging) {
+        List<Users> list;
+        int totalCount = 0;
+        int pageSize = 0;
+        int currPage = 0;
+        int totalPage = 0;
         if (paging != null && paging.getPage() != null && paging.getNum() != null){
             IPage<Users> userIPage = new Page(paging.getPage(), paging.getNum());
             userIPage = usersMapper.selectPage(userIPage, null);
-            pages = new Pages<>(userIPage);
+            list = userIPage.getRecords();
+            totalCount = (int)userIPage.getTotal();
+            pageSize = (int)userIPage.getSize();
+            currPage = (int)userIPage.getCurrent();
+            totalPage = (int)userIPage.getPages();
         }else{
-            List<Users> list = usersMapper.selectList(null);
-            pages = new Pages<>(list);
+            list = usersMapper.selectList(null);
         }
-        return pages;
+        List<UserManagerVo> userManagerVos = new ArrayList<>();
+        for(Users u : list){
+            UserManagerVo userManagerVo = new UserManagerVo();
+            BeanUtil.copyProperties(u, userManagerVo);
+            userManagerVos.add(userManagerVo);
+        }
+        return new Pages<UserManagerVo>(userManagerVos, totalCount, pageSize, currPage, totalPage);
     }
 
     /**
