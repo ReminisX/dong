@@ -20,12 +20,9 @@ public class SaTokenConfig implements WebMvcConfigurer {
 
     private final RolePowerMapper rolePowerMapper;
 
-    private final UsersMapper usersMapper;
-
     @Autowired
-    public SaTokenConfig(RolePowerMapper rolePowerMapper, UsersMapper usersMapper) {
+    public SaTokenConfig(RolePowerMapper rolePowerMapper) {
         this.rolePowerMapper = rolePowerMapper;
-        this.usersMapper = usersMapper;
     }
 
     // 注册Sa-Token的注解拦截器，打开注解式鉴权功能
