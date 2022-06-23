@@ -2,11 +2,11 @@ package com.zijin.dong.controller;
 
 import com.zijin.dong.annotation.LogAnnotation;
 import com.zijin.dong.entity.UserLogs;
-import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.BaseResponse;
 import com.zijin.dong.entity.base.Pages;
 import com.zijin.dong.entity.base.Paging;
 import com.zijin.dong.entity.vo.RegisterUserVo;
+import com.zijin.dong.entity.vo.UserManagerVo;
 import com.zijin.dong.service.AdminService;
 import com.zijin.dong.service.AreaService;
 import com.zijin.dong.service.UserLogsService;
@@ -41,7 +41,7 @@ public class RootController {
     @PostMapping("/getAllUser")
     @LogAnnotation(value = "查询全部用户")
     public BaseResponse getAllUser(@RequestBody Paging paging){
-        Pages<Users> res = adminServiceImpl.getAllUser(paging);
+        Pages<UserManagerVo> res = adminServiceImpl.getAllUser(paging);
         if (res.getTotalCount() <= 0){
             return ResponseUtil.faliure().setMessage("查询列表为空");
         }else{
@@ -67,6 +67,11 @@ public class RootController {
         }
     }
 
+    /**
+     * 日志查询接口
+     * @param paging 分页数据
+     * @return 当前日志
+     */
     @PostMapping("/getAllLogs")
     public BaseResponse getAllLogs(@RequestBody Paging paging) {
         Pages<UserLogs> res = userLogsServiceImpl.getAllLogs(paging);

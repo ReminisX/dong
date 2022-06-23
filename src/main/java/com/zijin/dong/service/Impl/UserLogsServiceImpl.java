@@ -1,10 +1,9 @@
-package com.zijin.dong.service.impl;
+package com.zijin.dong.service.Impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zijin.dong.entity.UserLogs;
-import com.zijin.dong.entity.Users;
 import com.zijin.dong.entity.base.Pages;
 import com.zijin.dong.entity.base.Paging;
 import com.zijin.dong.mapper.UserLogsMapper;

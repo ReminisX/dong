@@ -8,14 +8,12 @@ import com.zijin.dong.mapper.RolePowerMapper;
 import com.zijin.dong.mapper.UsersMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
 @Configuration
-@EnableWebMvc
 public class SaTokenConfig implements WebMvcConfigurer {
 
     private final RolePowerMapper rolePowerMapper;

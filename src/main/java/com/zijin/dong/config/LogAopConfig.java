@@ -1,6 +1,8 @@
 package com.zijin.dong.config;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zijin.dong.annotation.LogAnnotation;
 import com.zijin.dong.component.UserComponent;
 import com.zijin.dong.entity.UserLogs;
@@ -13,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 @Aspect
@@ -24,16 +26,19 @@ public class LogAopConfig {
 
     private final UserComponent userComponent;
 
+    private final ObjectMapper mapper;
+
     private final Logger logger = LoggerFactory.getLogger(LogAopConfig.class);
 
     @Autowired
-    public LogAopConfig(UserLogsMapper userLogsMapper, UserComponent userComponent) {
+    public LogAopConfig(UserLogsMapper userLogsMapper, UserComponent userComponent, ObjectMapper mapper) {
         this.userLogsMapper = userLogsMapper;
         this.userComponent = userComponent;
+        this.mapper = mapper;
     }
 
     @Around(value = "@annotation(logAnnotation)")
-    public Object logMethod(ProceedingJoinPoint joinPoint, LogAnnotation logAnnotation) {
+    public Object logMethod(ProceedingJoinPoint joinPoint, LogAnnotation logAnnotation) throws JsonProcessingException {
         // 获取用户名
         Long id = null;
         try {
@@ -42,19 +47,8 @@ public class LogAopConfig {
             logger.warn("先序获取name失败，延后处理");
         }
         // 获取请求参数，构造入参日志
-        StringBuilder inputParam = new StringBuilder();
         Object[] args = joinPoint.getArgs();
-        String functionName = joinPoint.getSignature().getName();
-        inputParam.append(functionName);
-        inputParam.append(": 收到的参数为[");
-        for (Object obj: args) {
-            inputParam.append(obj).append(",");
-        }
-        if (args.length != 0){
-            inputParam.delete(inputParam.length()-1, inputParam.length());
-        }
-        inputParam.append("]");
-        String inputLog = inputParam.toString();
+        String inputLog = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(args);
         // 执行代理函数
         Object returnValue = null;
         try {
@@ -64,7 +58,7 @@ public class LogAopConfig {
             throwable.printStackTrace();
         }
         // 获取返回参数，构造返回体日志
-        String returnLog = functionName + ": 返回的参数为[" + returnValue + "]";
+        String returnLog = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(returnValue);
         // 若当前id为空，再次尝试获取
         if (Objects.isNull(id)) {
             try {
@@ -80,7 +74,7 @@ public class LogAopConfig {
         UserLogs userLogs = new UserLogs();
         userLogs.setUsername(name);
         userLogs.setOperation(logMessage);
-        userLogs.setTime(LocalDateTime.now());
+        userLogs.setTime(new Date());
         userLogs.setInput(inputLog);
         userLogs.setResult(returnLog);
         userLogsMapper.insert(userLogs);

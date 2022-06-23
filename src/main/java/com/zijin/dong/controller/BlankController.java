@@ -9,8 +9,6 @@ import com.zijin.dong.entity.vo.UserLoginVo;
 import com.zijin.dong.service.Impl.StpInterfaceServiceImpl;
 import com.zijin.dong.service.UsersService;
 import com.zijin.dong.utils.ResponseUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@Api("通用无拦截接口")
 public class BlankController {
 
     private final Logger logger = LoggerFactory.getLogger(BlankController.class);
@@ -40,7 +37,6 @@ public class BlankController {
     }
 
     @PostMapping("/login")
-    @ApiOperation(value = "普通用户登录接口", httpMethod = "POST")
     @LogAnnotation(value = "登录")
     public ResponseEntity<BaseResponse> login(@RequestBody UserLoginVo userLoginVo){
         Long id = usersService.login(userLoginVo);
@@ -64,7 +60,6 @@ public class BlankController {
     }
 
     @PostMapping("/getUserInfo")
-    @ApiOperation(value = "用户信息获取")
     @LogAnnotation(value = "获取用户信息")
     public BaseResponse getUserInfo(@RequestParam String token){
         List<String> roleList = stpInterfaceServiceImpl.getRoleList(null, token);
@@ -78,7 +73,6 @@ public class BlankController {
                 .addParam("avatar", userInfoVo.getHeadPortrait());
     }
 
-    @ApiOperation(value = "普通用户退出", httpMethod = "POST")
     @PostMapping("/logout")
     @LogAnnotation(value = "退出")
     public BaseResponse exit(){

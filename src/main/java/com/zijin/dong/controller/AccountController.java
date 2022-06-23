@@ -8,8 +8,6 @@ import com.zijin.dong.entity.base.UploadData;
 import com.zijin.dong.service.Impl.StpInterfaceServiceImpl;
 import com.zijin.dong.service.UsersService;
 import com.zijin.dong.utils.ResponseUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/account")
-@Api("普通用户登录相关接口")
 public class AccountController {
 
     private final Logger logger = LoggerFactory.getLogger(AccountController.class);
@@ -39,7 +36,6 @@ public class AccountController {
         RequestMappingHandlerAdapter r;
     }
 
-    @ApiOperation(value = "普通用户查询自己ID", httpMethod = "POST")
     @PostMapping("/getId")
     @LogAnnotation(value = "查询自己ID")
     public BaseResponse getLoginId(HttpServletRequest request){

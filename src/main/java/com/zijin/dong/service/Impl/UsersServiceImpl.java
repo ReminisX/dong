@@ -3,7 +3,6 @@ package com.zijin.dong.service.Impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zijin.dong.entity.Users;
@@ -19,7 +18,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -72,8 +70,9 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         user.setUsername(registerUserVo.getName());
         user.setCreateTime(new Date());
         user.setPassword(registerUserVo.getPass());
-        user.setIdentifer(registerUserVo.getPower());
+        user.setPower(registerUserVo.getPower());
         user.setHeadImg(registerUserVo.getImgUrl());
+        user.setStatus("离线");
         int res = usersMapper.insert(user);
         if (res != 0){
             logger.info("用户[" + user.getUsername() + "]添加成功");
@@ -122,6 +121,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
             StpUtil.login(user.getId(), userLoginVo.isRemember());
             user.setToken(StpUtil.getTokenValue());
             user.setLoginTime(new Date());
+            user.setStatus("在线");
             usersMapper.updateById(user);
             logger.info("用户[" + users.getUsername() + "]登录成功");
             return user.getId();
@@ -139,6 +139,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
             Users user = new Users();
             user.setId(id);
             user.setToken("");
+            user.setStatus("离线");
             usersMapper.updateById(user);
             logger.info("[" + id + "]下线");
             StpUtil.logout();
