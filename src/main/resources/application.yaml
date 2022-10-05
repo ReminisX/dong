@@ -42,6 +42,8 @@ spring:
       multipart:
           max-file-size: 500MB
           max-request-size: 500MB
+    jmx:
+        enabled: true
 
 # minio 参数配置
 minio:

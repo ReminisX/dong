@@ -11,7 +11,7 @@ import com.zijin.dong.entity.vo.UserInfoVo;
 import com.zijin.dong.entity.vo.UserLoginVo;
 import com.zijin.dong.mapper.UsersMapper;
 import com.zijin.dong.service.UsersService;
-import com.zijin.dong.utils.MinioUtil;
+import com.zijin.dong.component.MinioComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -37,14 +37,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
 
     private final UsersMapper usersMapper;
 
-    private final MinioUtil minioUtil;
+    private final MinioComponent minioComponent;
 
     private final String DEFAULT_HEAD_AVATAR = "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif";
 
     @Autowired
-    public UsersServiceImpl(UsersMapper usersMapper, MinioUtil minioUtil){
+    public UsersServiceImpl(UsersMapper usersMapper, MinioComponent minioComponent){
         this.usersMapper = usersMapper;
-        this.minioUtil = minioUtil;
+        this.minioComponent = minioComponent;
     }
 
     /**
@@ -94,7 +94,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         // 用户头像获取
         String avatar = DEFAULT_HEAD_AVATAR;
         if (!Objects.isNull(users.getHeadImg()) && users.getHeadImg().length() > 0) {
-            avatar = minioUtil.getObjectUrl("head-portrait", users.getHeadImg());
+            avatar = minioComponent.getObjectUrl("head-portrait", users.getHeadImg());
         }else {
             logger.warn("用户头像信息为空，使用默认头像");
         }
@@ -157,7 +157,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         String fileType = fileNames[fileNames.length-1];
         String fileName = name + "-head-portrait." + fileType;
         try {
-            minioUtil.upload(bucket, fileName, multipartFile.getInputStream());
+            minioComponent.upload(bucket, fileName, multipartFile.getInputStream());
             Users user = new Users();
             user.setUsername(name);
             user.setHeadImg(fileName);

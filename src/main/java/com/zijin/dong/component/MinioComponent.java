@@ -1,8 +1,10 @@
-package com.zijin.dong.utils;
+package com.zijin.dong.component;
 
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
+import io.minio.messages.Bucket;
+import io.minio.messages.Item;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,18 +15,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class MinioUtil {
+public class MinioComponent {
 
-    private final Logger logger = LoggerFactory.getLogger(MinioUtil.class);
+    private final Logger logger = LoggerFactory.getLogger(MinioComponent.class);
 
     private final MinioClient minioClient;
 
     @Autowired
-    public MinioUtil(MinioClient minioClient) {
+    public MinioComponent(MinioClient minioClient) {
         this.minioClient = minioClient;
     }
 
@@ -150,6 +155,48 @@ public class MinioUtil {
             return false;
         }
         return true;
+    }
+
+    public boolean delObject(String bucketName, String objectName) {
+        if (!existObject(bucketName, objectName)) {
+            return false;
+        }
+        try {
+            minioClient.removeObject(RemoveObjectArgs.builder()
+                .bucket(bucketName)
+                .object(objectName)
+                .build());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public List<String> getAllUrlsInBucket(String bucketName, Integer maxKeys) {
+        List<String> list = new ArrayList<>();
+        if (!existBucket(bucketName)) {
+            return list;
+        }
+        Iterable<Result<Item>> it = minioClient.listObjects(
+                ListObjectsArgs.builder()
+                        .bucket(bucketName)
+                        .maxKeys(maxKeys)
+                        .build()
+        );
+        // 遍历添加url
+        it.forEach((result) -> {
+            String objectName;
+            try {
+                objectName = result.get().objectName();
+                list.add(getObjectUrl(bucketName, objectName));
+            } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
+                     InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
+                     XmlParserException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return list;
     }
 
 }
