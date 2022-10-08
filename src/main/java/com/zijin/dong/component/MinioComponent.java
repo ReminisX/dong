@@ -70,12 +70,12 @@ public class MinioComponent {
     }
 
     /**
-     * 获取对象的url链接
+     * 获取对象的url链接，超时单位秒
      * @param bucket 桶名称
      * @param fileName 文件名
      * @return get方法的http链接
      */
-    public String getObjectUrl(String bucket, String fileName) {
+    public String getObjectUrl(String bucket, String fileName, Integer time){
         // 桶及对象是否存在判断
         if (!existObject(bucket, fileName)) {
             return null;
@@ -88,7 +88,7 @@ public class MinioComponent {
                             .method(Method.GET)
                             .bucket(bucket)
                             .object(fileName)
-                            .expiry(2, TimeUnit.DAYS)
+                            .expiry(time, TimeUnit.SECONDS)
                             .build()
             );
         } catch (Exception e) {
@@ -173,7 +173,7 @@ public class MinioComponent {
         return true;
     }
 
-    public List<String> getAllUrlsInBucket(String bucketName, Integer maxKeys) {
+    public List<String> getAllUrlsInBucket(String bucketName, Integer maxKeys, Integer time) {
         List<String> list = new ArrayList<>();
         if (!existBucket(bucketName)) {
             return list;
@@ -189,7 +189,7 @@ public class MinioComponent {
             String objectName;
             try {
                 objectName = result.get().objectName();
-                list.add(getObjectUrl(bucketName, objectName));
+                list.add(getObjectUrl(bucketName, objectName, time));
             } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                      InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
                      XmlParserException e) {

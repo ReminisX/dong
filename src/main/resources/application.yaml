@@ -22,6 +22,8 @@ spring:
             minimum-idle: 5
             read-only: false
     redis:
+        switch: true
+        time: 3600
         database: 0
         host: 121.36.131.38
         jedis:

@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
 * @author ZhangXD
@@ -94,7 +95,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         // 用户头像获取
         String avatar = DEFAULT_HEAD_AVATAR;
         if (!Objects.isNull(users.getHeadImg()) && users.getHeadImg().length() > 0) {
-            avatar = minioComponent.getObjectUrl("head-portrait", users.getHeadImg());
+            avatar = minioComponent.getObjectUrl("head-portrait", users.getHeadImg(), 2*60*60);
         }else {
             logger.warn("用户头像信息为空，使用默认头像");
         }

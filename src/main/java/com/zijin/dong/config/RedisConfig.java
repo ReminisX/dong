@@ -1,45 +1,46 @@
 package com.zijin.dong.config;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 
-@Slf4j
 @Configuration
-public class RedisConfig extends CachingConfigurerSupport {
-
-    @Value("${spring.redis.host}")
-    private String host;
-
-    @Value("${spring.redis.port}")
-    private int port;
-
-    @Value("${spring.redis.jedis.pool.max-active}")
-    private int maxTotal;
-
-    @Value("${spring.redis.jedis.pool.max-idle}")
-    private int maxIdle;
-
-    @Value("${spring.redis.jedis.pool.min-idle}")
-    private int minIdle;
-
-    @Value("${spring.redis.password}")
-    private String password;
-
-    @Value("${spring.redis.timeout}")
-    private int timeout;
+public class RedisConfig {
 
     @Bean
-    public JedisPool redisPoolFactory() {
-        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        jedisPoolConfig.setMaxTotal(maxTotal);
-        jedisPoolConfig.setMaxIdle(maxIdle);
-        jedisPoolConfig.setMinIdle(minIdle);
-        JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout, password);
-        return jedisPool;
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        // 创建Template
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        // 设置连接工厂
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        // 设置JSON序列化工具
+        GenericJackson2JsonRedisSerializer jsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
+        //设置key和hashKey采用String序列化
+        redisTemplate.setKeySerializer(RedisSerializer.string());
+        redisTemplate.setHashKeySerializer(RedisSerializer.string());
+        //value和hashValue采用JSON格式序列化
+        redisTemplate.setValueSerializer(jsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(jsonRedisSerializer);
+        return redisTemplate;
     }
+
+    public RedisTemplate<String, String> redisTemplateStr(RedisConnectionFactory redisConnectionFactory) {
+        // 创建Template
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        // 设置连接工厂
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        // 设置JSON序列化工具
+        GenericJackson2JsonRedisSerializer jsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
+        //设置key和hashKey采用String序列化
+        redisTemplate.setKeySerializer(RedisSerializer.string());
+        redisTemplate.setHashKeySerializer(RedisSerializer.string());
+        //value和hashValue采用JSON格式序列化
+        redisTemplate.setValueSerializer(jsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(jsonRedisSerializer);
+        return redisTemplate;
+    }
+
 }
