@@ -1,5 +1,6 @@
 package com.zijin.dong.component;
 
+import com.zijin.dong.entity.base.ImageEntity;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
@@ -173,8 +174,8 @@ public class MinioComponent {
         return true;
     }
 
-    public List<String> getAllUrlsInBucket(String bucketName, Integer maxKeys, Integer time) {
-        List<String> list = new ArrayList<>();
+    public List<ImageEntity> getAllUrlsInBucket(String bucketName, Integer maxKeys, Integer time) {
+        List<ImageEntity> list = new ArrayList<>();
         if (!existBucket(bucketName)) {
             return list;
         }
@@ -189,7 +190,11 @@ public class MinioComponent {
             String objectName;
             try {
                 objectName = result.get().objectName();
-                list.add(getObjectUrl(bucketName, objectName, time));
+                String url = getObjectUrl(bucketName, objectName, time);
+                ImageEntity imageEntity = new ImageEntity();
+                imageEntity.setName(objectName);
+                imageEntity.setUrl(url);
+                list.add(imageEntity);
             } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                      InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
                      XmlParserException e) {

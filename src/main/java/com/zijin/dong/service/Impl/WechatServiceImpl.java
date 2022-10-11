@@ -1,6 +1,7 @@
 package com.zijin.dong.service.Impl;
 
 import com.zijin.dong.component.MinioComponent;
+import com.zijin.dong.entity.base.ImageEntity;
 import com.zijin.dong.service.WechatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,10 +23,10 @@ public class WechatServiceImpl implements WechatService {
     @Value("${spring.redis.switch}")
     private boolean redisSwitch;
 
-    private final BoundListOperations<String, String> listOps;
+    private final BoundListOperations<String, Object> listOps;
 
     @Autowired
-    public WechatServiceImpl(MinioComponent minioComponent, RedisTemplate<String, String> redisTemplate) {
+    public WechatServiceImpl(MinioComponent minioComponent, RedisTemplate<String, Object> redisTemplate) {
         this.minioComponent = minioComponent;
         listOps = redisTemplate.boundListOps(bucketName);
     }
@@ -49,13 +50,13 @@ public class WechatServiceImpl implements WechatService {
      * @return 列表对象的url链接
      */
     @Override
-    public List<String> getSwiperItems() {
+    public List<? extends Object> getSwiperItems() {
         if (redisSwitch) {
-            List<String> temp = listOps.range(0, maxKeys);
+            List<Object> temp = listOps.range(0, maxKeys);
             if (Objects.isNull(temp) || temp.size() == 0) {
-                List<String> list = minioComponent.getAllUrlsInBucket(bucketName, maxKeys, time);
-                for (String s : list) {
-                    listOps.rightPush(s);
+                List<ImageEntity> list = minioComponent.getAllUrlsInBucket(bucketName, maxKeys, time);
+                for (ImageEntity imageEntity : list) {
+                    listOps.rightPush(imageEntity);
                 }
                 listOps.expire(time, TimeUnit.SECONDS);
                 return list;

@@ -11,7 +11,7 @@ public interface WechatService {
      * 获取主页横幅信息
      * @return 列表形式的url链接
      */
-    List<String> getSwiperItems();
+    List<? extends Object> getSwiperItems();
 
     /**
      * 增加主页滚动横幅图片
