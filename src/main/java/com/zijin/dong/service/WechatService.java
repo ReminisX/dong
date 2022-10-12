@@ -25,4 +25,7 @@ public interface WechatService {
      */
     boolean delSwiperItem(String objectName);
 
+    boolean changeSwiperItem(String name, MultipartFile multipartFile);
+
+    boolean renameSwiperItem(String name, String newName);
 }

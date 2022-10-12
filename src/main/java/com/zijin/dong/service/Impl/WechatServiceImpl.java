@@ -83,4 +83,18 @@ public class WechatServiceImpl implements WechatService {
     public boolean delSwiperItem(String objectName) {
         return minioComponent.delObject(bucketName, objectName);
     }
+
+    @Override
+    public boolean changeSwiperItem(String name, MultipartFile multipartFile) {
+        if (delSwiperItem(name) && putSwiperItem(name, multipartFile)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean renameSwiperItem(String name, String newName) {
+        return false;
+    }
 }

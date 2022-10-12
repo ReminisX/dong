@@ -204,4 +204,27 @@ public class MinioComponent {
         return list;
     }
 
+    /**
+     * 重命名桶内元素
+     * @param bucketName 桶名
+     * @param oldName 旧文件名
+     * @param newName 新文件名
+     * @return 是否更改成功
+     */
+    public boolean renameItem(String bucketName, String oldName, String newName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        if (!existObject(bucketName, oldName)) {
+            return false;
+        }
+        ObjectWriteResponse objectWriteResponse = minioClient.copyObject(CopyObjectArgs.builder()
+                        .source(CopySource.builder()
+                                .bucket(bucketName)
+                                .object(oldName)
+                                .build())
+                        .bucket(bucketName)
+                        .object(newName)
+                        .build());
+        delObject(bucketName, oldName);
+
+    }
+
 }
