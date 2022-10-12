@@ -4,7 +4,6 @@ import com.zijin.dong.entity.base.ImageEntity;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
-import io.minio.messages.Bucket;
 import io.minio.messages.Item;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -211,20 +209,25 @@ public class MinioComponent {
      * @param newName 新文件名
      * @return 是否更改成功
      */
-    public boolean renameItem(String bucketName, String oldName, String newName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public boolean renameItem(String bucketName, String oldName, String newName) {
         if (!existObject(bucketName, oldName)) {
             return false;
         }
-        ObjectWriteResponse objectWriteResponse = minioClient.copyObject(CopyObjectArgs.builder()
-                        .source(CopySource.builder()
-                                .bucket(bucketName)
-                                .object(oldName)
-                                .build())
-                        .bucket(bucketName)
-                        .object(newName)
-                        .build());
-        delObject(bucketName, oldName);
-
+        try {
+            minioClient.copyObject(CopyObjectArgs.builder()
+                    .source(CopySource.builder()
+                            .bucket(bucketName)
+                            .object(oldName)
+                            .build())
+                    .bucket(bucketName)
+                    .object(newName)
+                    .build());
+            delObject(bucketName, oldName);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 }

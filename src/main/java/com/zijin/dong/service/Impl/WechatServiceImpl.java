@@ -50,7 +50,7 @@ public class WechatServiceImpl implements WechatService {
      * @return 列表对象的url链接
      */
     @Override
-    public List<? extends Object> getSwiperItems() {
+    public List<?> getSwiperItems() {
         if (redisSwitch) {
             List<Object> temp = listOps.range(0, maxKeys);
             if (Objects.isNull(temp) || temp.size() == 0) {
@@ -95,6 +95,6 @@ public class WechatServiceImpl implements WechatService {
 
     @Override
     public boolean renameSwiperItem(String name, String newName) {
-        return false;
+        return minioComponent.renameItem(bucketName, name, newName);
     }
 }
