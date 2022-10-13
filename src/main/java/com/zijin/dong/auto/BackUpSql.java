@@ -51,7 +51,7 @@ public class BackUpSql {
                 " -p" + password +
                 " " + database +
                 " > " + path + File.separator + sqlFileName;
-        logger.info("数据库开始备份");
+        logger.info("数据库开始备份，执行语句：[" + cmd + "]");
         String res = RuntimeUtil.execForStr(cmd);
         logger.info("数据库备份完成，返回信息" + res);
     }
