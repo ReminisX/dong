@@ -224,7 +224,7 @@ public class MinioComponent {
                         .object(newName)
                         .build());
         delObject(bucketName, oldName);
-
+        return true;
     }
 
 }
