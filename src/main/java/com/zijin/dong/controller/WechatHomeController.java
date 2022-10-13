@@ -33,8 +33,8 @@ public class WechatHomeController {
     }
 
     @PostMapping("/changeSwiperItem")
-    public BaseResponse changeSwiperItem(@RequestBody SwiperItemVo swiperItemVo, MultipartFile multipartFile) {
-        boolean isChange = wechatService.changeSwiperItem(swiperItemVo.getName(), multipartFile);
+    public BaseResponse changeSwiperItem(@RequestParam String name, @RequestParam MultipartFile file) {
+        boolean isChange = wechatService.changeSwiperItem(name, file);
         return isChange ? ResponseUtil.success() : ResponseUtil.faliure();
     }
 
