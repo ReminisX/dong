@@ -158,7 +158,7 @@ public class MinioComponent {
 
     public boolean delObject(String bucketName, String objectName) {
         if (!existObject(bucketName, objectName)) {
-            return false;
+            return true;
         }
         try {
             minioClient.removeObject(RemoveObjectArgs.builder()

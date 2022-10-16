@@ -22,7 +22,7 @@ public class WechatHomeController {
 
     @GetMapping("/getSwiperItems")
     public BaseResponse getSwiperItems() {
-        List<ImageEntity> res = (List<ImageEntity>) wechatService.getSwiperItems();
+        List<ImageEntity> res = wechatService.getSwiperItems();
         return ResponseUtil.success().addData(res);
     }
 
