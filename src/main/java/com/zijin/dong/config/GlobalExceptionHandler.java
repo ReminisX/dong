@@ -1,9 +1,6 @@
 package com.zijin.dong.config;
 
-import cn.dev33.satoken.exception.DisableLoginException;
-import cn.dev33.satoken.exception.NotLoginException;
-import cn.dev33.satoken.exception.NotPermissionException;
-import cn.dev33.satoken.exception.NotRoleException;
+import cn.dev33.satoken.exception.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zijin.dong.entity.base.BaseResponse;
@@ -36,8 +33,8 @@ public class GlobalExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public BaseResponse validationErrorHandler(MethodArgumentNotValidException ex) throws JsonProcessingException {
         //1.此处先获取BindingResult
         BindingResult bindingResult = ex.getBindingResult();
@@ -55,9 +52,9 @@ public class GlobalExceptionHandler {
         return ResponseUtil.faliure().addData(json);
     }
 
-    @ExceptionHandler
     @ResponseBody
-    public BaseResponse handlerException(Exception e, HttpServletRequest request, HttpServletResponse response){
+    @ExceptionHandler(value = SaTokenException.class)
+    public BaseResponse handlerException(SaTokenException e, HttpServletRequest request, HttpServletResponse response){
         logger.error(e.getLocalizedMessage());
         logger.warn("token为:" + request.getHeader("satoken"));
         String errMsg = "";
@@ -72,8 +69,8 @@ public class GlobalExceptionHandler {
         }else{
             errMsg = e.getLocalizedMessage();
         }
-        if (errMsg.length() > 50){
-            errMsg = errMsg.split("\\.")[0];
+        if (errMsg.length() > 100){
+            errMsg = errMsg.substring(0, 100);
         }
         return ResponseUtil.faliure().setMessage(errMsg);
     }
